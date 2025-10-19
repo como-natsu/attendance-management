@@ -68,7 +68,7 @@
             </div>
         </div>
         <div class="form-button">
-            <button class="form-button-submit" type="submit">登録</button>
+            <button class="form-button-submit" type="submit">登録する</button>
         </div>
     </form>
     <div class="login-link">
