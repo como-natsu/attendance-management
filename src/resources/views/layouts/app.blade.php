@@ -14,12 +14,12 @@
     <header class="header">
         <div class="container">
             <div class="header-inner">
-                <a class="header-logo" href="/">
-                    <img class="header-logo-img" src="{{ asset('storage/image/CoachTech_White.png') }}" alt="coachtech-logo">
-                </a>
+                <img class="header-logo-img" src="{{ asset('storage/image/CoachTech_White.png') }}"
+                    alt="coachtech-logo">
                 <div class="header-right">
                     <form class="header-search" action="/" method="GET">
-                        <input class="header-search-input" type="text" name="search" placeholder="なにをお探しですか？" value="{{ request('search') }}">
+                        <input class="header-search-input" type="text" name="search" placeholder="なにをお探しですか？"
+                            value="{{ request('search') }}">
                         <button class="header-search-button" type="submit">検索</button>
                     </form>
                     <nav class="header-nav">

@@ -11,7 +11,7 @@
     <div class="login-form-heading">
         <h2>ログイン</h2>
     </div>
-    <form class="form" action="/login" method="post">
+    <form class="form" action="{{ route('login') }}" method="post">
         @csrf
         <div class="form-group">
             <div class="form-group-title">
