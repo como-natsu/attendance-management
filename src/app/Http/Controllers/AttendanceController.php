@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Attendance;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class AttendanceController extends Controller
 {
@@ -13,10 +14,10 @@ class AttendanceController extends Controller
         $user = Auth::user();
 
         // 今日の日付を取得
-        $today = now()->toDateString();// ← 本番用（自動で今日の日付）
+        //$today = now()->toDateString();// ← 本番用（自動で今日の日付）
 
         // ★ テスト用に特定の日付を指定したい場合はこちらを使う
-        // $today = '2025-10-01'; // ← テスト用：日付固定(テストを繰り返したい場合次の日に変更して再テスト)
+        $today = '2025-10-02'; // ← テスト用：日付固定(テストを繰り返したい場合次の日に変更して再テスト)
 
         $attendance = Attendance::firstOrCreate(
             ['user_id' => $user->id, 'work_date' => $today],
@@ -33,8 +34,8 @@ class AttendanceController extends Controller
     {
         $user = Auth::user();
 
-        $today = now()->toDateString();
-        // $today = '2025-10-01'; // ← テスト用
+        //$today = now()->toDateString();
+        $today = '2025-10-02'; // ← テスト用
 
         $attendance = Attendance::firstOrCreate(
             ['user_id' => $user->id, 'work_date' => $today],
@@ -52,8 +53,8 @@ class AttendanceController extends Controller
     {
         $user = Auth::user();
 
-        $today = now()->toDateString();
-        // $today = '2025-10-01'; // ← テスト用
+        //$today = now()->toDateString();
+        $today = '2025-10-02'; // ← テスト用
 
         $attendance = Attendance::where('user_id', $user->id)
             ->where('work_date', $today)
@@ -72,8 +73,8 @@ class AttendanceController extends Controller
     {
         $user = Auth::user();
 
-        $today = now()->toDateString();
-        // $today = '2025-10-01'; // ← テスト用
+        //$today = now()->toDateString();
+        $today = '2025-10-02'; // ← テスト用
 
         $attendance = Attendance::where('user_id', $user->id)
             ->where('work_date', $today)
@@ -91,8 +92,8 @@ class AttendanceController extends Controller
     {
         $user = Auth::user();
 
-        $today = now()->toDateString();
-        // $today = '2025-10-01'; // ← テスト用
+        //$today = now()->toDateString();
+        $today = '2025-10-02'; // ← テスト用
 
         $attendance = Attendance::where('user_id', $user->id)
             ->where('work_date', $today)
@@ -104,5 +105,35 @@ class AttendanceController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function list(Request $request)
+    {
+        $user = Auth::user();
+
+        $month = $request->query('month', now()->format('Y-m'));
+        $start = Carbon::parse($month)->startOfMonth();
+        $end = Carbon::parse($month)->endOfMonth();
+
+        $attendances = Attendance::where('user_id', $user->id)
+            ->whereBetween('work_date', [$start, $end])
+            ->get()
+            ->keyBy(function($item) {
+                return \Carbon\Carbon::parse($item->work_date)->format('Y-m-d');
+            });
+
+        return view('attendance.list',[
+            'attendances' => $attendances,
+            'start' => $start,
+            'end' => $end,
+            'prevMonth' => $start->copy()->subMonth()->format('Y-m'),
+            'nextMonth' => $start->copy()->addMonth()->format('Y-m'),
+        ]);
+    }
+
+    public function detail($id)
+    {
+    $attendance = Attendance::findOrFail($id);
+    return view('attendance.detail', compact('attendance'));
     }
 }
