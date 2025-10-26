@@ -1,22 +1,53 @@
+.attendance-content-list {
+    display: block;
+    width: 100%;
+    min-height: 100vh;
+    padding: 30px;
+    overflow-x: hidden;
+}
+
 .month-navigation {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
+    width: 100%;
+    max-width: 700px;
+    padding: 10px 30px;
+    border-radius: 10px;
+    margin: 0 auto 30px;
+    box-sizing: border-box;
+}
+
+.month-left,
+.month-right {
+    flex: 1;
+    display: flex;
     justify-content: center;
-    gap: 20px;
-    margin-bottom: 30px;
+}
+
+.month-left {
+    justify-content: flex-start;
+    font-weight: bold;
+}
+
+.month-right {
+    justify-content: flex-end;
 }
 
 .month-nav-link {
     text-decoration: none;
-    color: #000;
+    color: #737373;
     font-weight: bold;
     font-size: 16px;
 }
 
-.month-picker {
+.month-center {
+    flex: 2;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    justify-content: center;
+    gap: 10px;
     position: relative;
 }
 
@@ -32,10 +63,6 @@
     transition: transform 0.2s ease;
 }
 
-.calendar-icon:hover {
-    transform: scale(1.1);
-}
-
 .month-input {
     position: absolute;
     top: 0;
@@ -44,9 +71,57 @@
     height: 24px;
     opacity: 0;
     cursor: pointer;
+    z-index: 2;
 }
 
 .month-text {
-    font-size: 1.2rem;
-    font-weight: 600;
+    font-size: 20px;
+    font-weight: bold;
+    color: #000
+}
+
+.attendance-table-inner {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+/* 日付列に左右の余白を追加 */
+.attendance-table-row td:first-child,
+.attendance-table-row th:first-child {
+    padding-left: 30px;
+    padding-right: 40px;
+
+}
+
+/* 詳細列に左右の余白を追加 */
+.attendance-table-row td:last-child,
+.attendance-table-row th:last-child {
+    padding-left: 30px;
+    padding-right: 40px;
+}
+
+.attendance-table-row {
+    margin: 10px 20px;
+    border: solid 3px #f0eff2;
+}
+
+.attendance-table-header,
+.attendance-table-item {
+    font-weight: bold;
+    color: #737373;
+    text-align: center;
+    padding: 10px 30px;
+}
+
+.attendance-table-item-link {
+    font-weight: bold;
+    color: #000;
+    text-align: center;
+    padding: 10px;
+    text-decoration: none;
 }
