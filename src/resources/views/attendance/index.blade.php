@@ -13,11 +13,10 @@
                 <p class="attendance-status-text">{{ $attendance->status }}</p>
             </div>
             <div class="attendance-date">
-                <p class="attendance-date-text">
-                    {{ now()->format('Y年m月d日') }}({{ \Carbon\Carbon::now()->locale('ja')->isoFormat('ddd')}})</p>
+                <p class="attendance-date-text" id="current-date"></p>
             </div>
             <div class="attendance-time">
-                <p class="attendance-time-text">{{ $currentTime }}</p>
+                <p class="attendance-time-text" id="current-time"></p>
             </div>
         </div>
 
@@ -53,4 +52,28 @@
         </div>
     </div>
 </div>
+
+<script>
+function updateDateTime() {
+    const now = new Date();
+    // 日付
+    const year = now.getFullYear();
+    const month = (now.getMonth()+1).toString().padStart(2,'0');
+    const day = now.getDate().toString().padStart(2,'0');
+    const weekday = ['日','月','火','水','木','金','土'][now.getDay()];
+    document.getElementById('current-date').textContent = `${year}年${month}月${day}日(${weekday})`;
+
+    // 時刻（秒は表示しない）
+    const hours = now.getHours().toString().padStart(2,'0');
+    const minutes = now.getMinutes().toString().padStart(2,'0');
+    document.getElementById('current-time').textContent = `${hours}:${minutes}`;
+}
+
+// 最初に表示
+updateDateTime();
+
+// 毎秒更新
+setInterval(updateDateTime, 1000);
+</script>
+
 @endsection

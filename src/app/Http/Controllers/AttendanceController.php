@@ -19,7 +19,7 @@ class AttendanceController extends Controller
         //$today = now()->toDateString();// ← 本番用（自動で今日の日付）
 
         // ★ テスト用に特定の日付を指定したい場合はこちらを使う
-        $today = '2025-10-03'; // ← テスト用：日付固定(テストを繰り返したい場合次の日に変更して再テスト)
+        $today = '2025-10-04'; // ← テスト用：日付固定(テストを繰り返したい場合次の日に変更して再テスト)
 
         $attendance = Attendance::firstOrCreate(
             ['user_id' => $user->id, 'work_date' => $today],
@@ -28,7 +28,6 @@ class AttendanceController extends Controller
 
         return view('attendance.index', [
             'attendance' => $attendance,
-            'currentTime' => now()->format('H:i'),
         ]);
     }
 
@@ -37,7 +36,7 @@ class AttendanceController extends Controller
         $user = Auth::user();
 
         //$today = now()->toDateString();
-        $today = '2025-10-03'; // ← テスト用
+        $today = '2025-10-04'; // ← テスト用
 
         $attendance = Attendance::firstOrCreate(
             ['user_id' => $user->id, 'work_date' => $today],
@@ -56,7 +55,7 @@ class AttendanceController extends Controller
         $user = Auth::user();
 
         //$today = now()->toDateString();
-        $today = '2025-10-03'; // ← テスト用
+        $today = '2025-10-04'; // ← テスト用
 
         $attendance = Attendance::where('user_id', $user->id)
             ->where('work_date', $today)
@@ -76,13 +75,18 @@ class AttendanceController extends Controller
         $user = Auth::user();
 
         //$today = now()->toDateString();
-        $today = '2025-10-03'; // ← テスト用
+        $today = '2025-10-04'; // ← テスト用
 
         $attendance = Attendance::where('user_id', $user->id)
             ->where('work_date', $today)
             ->first();
 
         if ($attendance && $attendance->status === '出勤中') {
+            $attendance->breakTimes()->create([
+            'break_start' => now(),
+            'break_end'   => null,
+            ]);
+
             $attendance->status = '休憩中';
             $attendance->save();
         }
@@ -95,13 +99,19 @@ class AttendanceController extends Controller
         $user = Auth::user();
 
         //$today = now()->toDateString();
-        $today = '2025-10-03'; // ← テスト用
+        $today = '2025-10-04'; // ← テスト用
 
         $attendance = Attendance::where('user_id', $user->id)
             ->where('work_date', $today)
             ->first();
 
         if ($attendance && $attendance->status === '休憩中') {
+            $lastBreak = $attendance->breakTimes()->latest()->first();
+            if ($lastBreak && !$lastBreak->break_end) {
+                $lastBreak->update([
+                    'break_end' => now(),
+                ]);
+            }
             $attendance->status = '出勤中';
             $attendance->save();
         }
@@ -154,21 +164,36 @@ class AttendanceController extends Controller
     {
         $attendance = Attendance::where('user_id', auth()->id())->findOrFail($id);
 
-        // 入力値を取得
-        $clock_in  = $request->input('clock_in');
-        $clock_out = $request->input('clock_out');
+        $workDate = Carbon::parse($attendance->work_date);
+
+        // 入力値(H:i)をDATETIMEに変換
+        $clock_in = $request->input('clock_in')
+            ? Carbon::createFromFormat('H:i', $request->input('clock_in'))->setDate($workDate->year, $workDate->month, $workDate->day)
+            : null;
+
+        $clock_out = $request->input('clock_out')
+            ? Carbon::createFromFormat('H:i', $request->input('clock_out'))->setDate($workDate->year, $workDate->month, $workDate->day)
+            : null;
+
         $breaks = [
             [
-                'break_start' => $request->input('break1_start'),
-                'break_end'   => $request->input('break1_end'),
+                'break_start' => $request->input('break1_start')
+                    ? Carbon::createFromFormat('H:i', $request->input('break1_start'))->setDate($workDate->year, $workDate->month, $workDate->day)->toDateTimeString()
+                    : null,
+                'break_end' => $request->input('break1_end')
+                    ? Carbon::createFromFormat('H:i', $request->input('break1_end'))->setDate($workDate->year, $workDate->month, $workDate->day)->toDateTimeString()
+                    : null,
             ],
             [
-                'break_start' => $request->input('break2_start'),
-                'break_end'   => $request->input('break2_end'),
+                'break_start' => $request->input('break2_start')
+                    ? Carbon::createFromFormat('H:i', $request->input('break2_start'))->setDate($workDate->year, $workDate->month, $workDate->day)->toDateTimeString()
+                    : null,
+                'break_end' => $request->input('break2_end')
+                    ? Carbon::createFromFormat('H:i', $request->input('break2_end'))->setDate($workDate->year, $workDate->month, $workDate->day)->toDateTimeString()
+                    : null,
             ],
         ];
 
-        // 申請登録
         AttendanceRequest::create([
             'attendance_id'        => $attendance->id,
             'user_id'              => auth()->id(),
@@ -182,4 +207,5 @@ class AttendanceController extends Controller
         return redirect()->route('attendance.detail', $attendance->id)
             ->with('status', '修正申請を送信しました（承認待ち）');
     }
+
 }

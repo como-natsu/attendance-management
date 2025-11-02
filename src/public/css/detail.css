@@ -1,25 +1,66 @@
 .attendance-detail {
-    max-width: 700px;
-    margin: 40px auto;
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 6px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display: block;
+    width: auto;
+    min-height: 100vh;
+    overflow-x: hidden;
+    margin: 0 auto;
+    max-width: 1000px;
+    padding: 50px 20px;
+    box-sizing: border-box;
 }
 
-.attendance-detail h2 {
-    text-align: center;
-    margin-bottom: 25px;
+.attendance-detail-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
+
+.attendance-title {
+    margin: 30px 0px;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.line-image {
+    height: 40px;
+    width: auto;
+}
+
+.attendance-detail-content {
+    display: flex;
+    width: 100%;
+}
+
+.form-group-wrapper {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 30px 70px;
+    box-sizing: border-box;
+    margin: 0 auto 30px;
+}
+
 
 .form-group {
-    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 70px;
+    padding: 15px 0;
+}
+
+.attendance-detail-row {
+    width: calc(100% + 60px);
+    margin: 10px -30px;
+    height: 2px;
+    background-color: #f0eff2;
 }
 
 label {
-    display: block;
     font-weight: bold;
-    margin-bottom: 5px;
+    color: #737373;
+    min-width: 80px;
 }
 
 input[type="time"],
@@ -47,11 +88,11 @@ textarea {
     color: red;
     text-align: right;
     margin-bottom: 10px;
-    font-weight: bold;
 }
 
 .work-year {
-    margin-right: 30px;
+    margin-left: 50px;
+    margin-right: 100px;
     font-weight: bold;
 }
 

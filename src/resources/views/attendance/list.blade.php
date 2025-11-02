@@ -7,6 +7,10 @@
 @section('content')
 
 <div class="attendance-content-list">
+    <div class=attendance-content-title>
+        <img class="line-image" src="{{ asset('storage/image/Line.png') }}"alt="Line-image">
+        <p class=attendance-title>勤怠一覧</p>
+    </div>
     <div class="month-navigation">
         <div class="month-left">
             <a href="{{ route('attendance.list', ['month' => $prevMonth]) }}" class="month-nav-link">

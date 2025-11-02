@@ -2,9 +2,29 @@
     display: block;
     width: 100%;
     min-height: 100vh;
-    padding: 30px;
     overflow-x: hidden;
+    padding: 50px 306px;
+    margin: 0 auto;
+    box-sizing: border-box;
 }
+
+.attendance-content-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.attendance-title {
+    margin: 30px 0px;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.line-image {
+    height: 40px;
+    width: auto;
+}
+
 
 .month-navigation {
     display: flex;
@@ -12,7 +32,6 @@
     justify-content: space-between;
     background-color: #fff;
     width: 100%;
-    max-width: 700px;
     padding: 10px 30px;
     border-radius: 10px;
     margin: 0 auto 30px;
@@ -82,7 +101,6 @@
 
 .attendance-table-inner {
     width: 100%;
-    max-width: 700px;
     margin: 0 auto;
     border-collapse: collapse;
     background-color: #ffffff;
