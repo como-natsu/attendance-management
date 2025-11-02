@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>attendance-management</title>
     <link rel="stylesheet" href="{{ asset('css/sanitize.css')}}">
-    <link rel="stylesheet" href="{{ asset('css/common.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/auth.css')}}">
     @yield('css')
 </head>
 
@@ -17,7 +17,7 @@
         </div>
     </header>
 
-    <div class="content">
+    <div class="auth-content">
         @yield('content')
     </div>
 </body>

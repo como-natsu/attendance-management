@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Attendance;
+use App\Models\AttendanceRequest;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use App\Http\Requests\UpdateAttendanceRequest;
 
 class AttendanceController extends Controller
 {
@@ -17,7 +19,7 @@ class AttendanceController extends Controller
         //$today = now()->toDateString();// ← 本番用（自動で今日の日付）
 
         // ★ テスト用に特定の日付を指定したい場合はこちらを使う
-        $today = '2025-10-02'; // ← テスト用：日付固定(テストを繰り返したい場合次の日に変更して再テスト)
+        $today = '2025-10-03'; // ← テスト用：日付固定(テストを繰り返したい場合次の日に変更して再テスト)
 
         $attendance = Attendance::firstOrCreate(
             ['user_id' => $user->id, 'work_date' => $today],
@@ -35,7 +37,7 @@ class AttendanceController extends Controller
         $user = Auth::user();
 
         //$today = now()->toDateString();
-        $today = '2025-10-02'; // ← テスト用
+        $today = '2025-10-03'; // ← テスト用
 
         $attendance = Attendance::firstOrCreate(
             ['user_id' => $user->id, 'work_date' => $today],
@@ -54,7 +56,7 @@ class AttendanceController extends Controller
         $user = Auth::user();
 
         //$today = now()->toDateString();
-        $today = '2025-10-02'; // ← テスト用
+        $today = '2025-10-03'; // ← テスト用
 
         $attendance = Attendance::where('user_id', $user->id)
             ->where('work_date', $today)
@@ -74,7 +76,7 @@ class AttendanceController extends Controller
         $user = Auth::user();
 
         //$today = now()->toDateString();
-        $today = '2025-10-02'; // ← テスト用
+        $today = '2025-10-03'; // ← テスト用
 
         $attendance = Attendance::where('user_id', $user->id)
             ->where('work_date', $today)
@@ -93,7 +95,7 @@ class AttendanceController extends Controller
         $user = Auth::user();
 
         //$today = now()->toDateString();
-        $today = '2025-10-02'; // ← テスト用
+        $today = '2025-10-03'; // ← テスト用
 
         $attendance = Attendance::where('user_id', $user->id)
             ->where('work_date', $today)
@@ -133,7 +135,51 @@ class AttendanceController extends Controller
 
     public function detail($id)
     {
-    $attendance = Attendance::findOrFail($id);
-    return view('attendance.detail', compact('attendance'));
+        $attendance = Attendance::with('breakTimes')
+            ->where('user_id', auth()->id())
+            ->findOrFail($id);
+
+        $break1 = $attendance->breakTimes[0] ?? null;
+        $break2 = $attendance->breakTimes[1] ?? null;
+
+        // 直近の申請状態を取得（同じ勤怠IDの最新レコード）
+        $request = AttendanceRequest::where('attendance_id', $attendance->id)
+            ->latest()
+            ->first();
+
+        return view('attendance.detail', compact('attendance', 'break1', 'break2','request'));
+    }
+
+    public function requestEdit(UpdateAttendanceRequest $request, $id)
+    {
+        $attendance = Attendance::where('user_id', auth()->id())->findOrFail($id);
+
+        // 入力値を取得
+        $clock_in  = $request->input('clock_in');
+        $clock_out = $request->input('clock_out');
+        $breaks = [
+            [
+                'break_start' => $request->input('break1_start'),
+                'break_end'   => $request->input('break1_end'),
+            ],
+            [
+                'break_start' => $request->input('break2_start'),
+                'break_end'   => $request->input('break2_end'),
+            ],
+        ];
+
+        // 申請登録
+        AttendanceRequest::create([
+            'attendance_id'        => $attendance->id,
+            'user_id'              => auth()->id(),
+            'requested_clock_in'   => $clock_in,
+            'requested_clock_out'  => $clock_out,
+            'requested_breaks'     => json_encode($breaks),
+            'reason'               => $request->input('reason'),
+            'status'               => 'pending',
+        ]);
+
+        return redirect()->route('attendance.detail', $attendance->id)
+            ->with('status', '修正申請を送信しました（承認待ち）');
     }
 }

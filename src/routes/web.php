@@ -33,5 +33,6 @@ Route::middleware(['auth'])->group(function(){
     Route::post('/attendance/break-end',[AttendanceController::class,'breakEnd'])->name('attendance.break_end');
     Route::get('/attendance/list',[AttendanceController::class,'list'])->name('attendance.list');
     Route::get('/attendance/detail/{id}',[AttendanceController::class,'detail'])->name('attendance.detail');
+    Route::post('/attendance/detail/{id}/request-edit', [AttendanceController::class, 'requestEdit'])->name('attendance.requestEdit');
 
 });
