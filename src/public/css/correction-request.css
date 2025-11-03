@@ -1,0 +1,75 @@
+.request-content-list {
+    display: block;
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+    padding: 50px 306px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.tab-menu {
+    margin-bottom: 50px;
+    border-bottom: solid 1px #000000;
+}
+
+.tab-menu a {
+    display: inline-block;
+    padding: 10px 30px;
+    text-decoration: none;
+    color: #000000;
+    margin: 0px 30px;
+    border-radius: 4px;
+}
+
+.tab-menu a.active {
+    color: #000000;
+    font-weight: bold;
+}
+
+.request-content-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.request-title {
+    margin: 30px 0px;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.line-image {
+    height: 40px;
+    width: auto;
+}
+
+.request-table-inner {
+    width: 100%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+.request-table-row {
+    margin: 10px 20px;
+    border: solid 3px #f0eff2;
+}
+
+.request-table-header,
+.request-table-item {
+    font-weight: bold;
+    color: #737373;
+    text-align: center;
+    padding: 10px 30px;
+}
+
+.request-table-item-link {
+    font-weight: bold;
+    color: #000;
+    text-align: center;
+    padding: 10px;
+    text-decoration: none;
+}

@@ -19,7 +19,7 @@ class AttendanceController extends Controller
         //$today = now()->toDateString();// ← 本番用（自動で今日の日付）
 
         // ★ テスト用に特定の日付を指定したい場合はこちらを使う
-        $today = '2025-10-04'; // ← テスト用：日付固定(テストを繰り返したい場合次の日に変更して再テスト)
+        $today = '2025-10-05'; // ← テスト用：日付固定(テストを繰り返したい場合次の日に変更して再テスト)
 
         $attendance = Attendance::firstOrCreate(
             ['user_id' => $user->id, 'work_date' => $today],
@@ -36,7 +36,7 @@ class AttendanceController extends Controller
         $user = Auth::user();
 
         //$today = now()->toDateString();
-        $today = '2025-10-04'; // ← テスト用
+        $today = '2025-10-05'; // ← テスト用
 
         $attendance = Attendance::firstOrCreate(
             ['user_id' => $user->id, 'work_date' => $today],
@@ -55,7 +55,7 @@ class AttendanceController extends Controller
         $user = Auth::user();
 
         //$today = now()->toDateString();
-        $today = '2025-10-04'; // ← テスト用
+        $today = '2025-10-05'; // ← テスト用
 
         $attendance = Attendance::where('user_id', $user->id)
             ->where('work_date', $today)
@@ -75,7 +75,7 @@ class AttendanceController extends Controller
         $user = Auth::user();
 
         //$today = now()->toDateString();
-        $today = '2025-10-04'; // ← テスト用
+        $today = '2025-10-05'; // ← テスト用
 
         $attendance = Attendance::where('user_id', $user->id)
             ->where('work_date', $today)
@@ -99,7 +99,7 @@ class AttendanceController extends Controller
         $user = Auth::user();
 
         //$today = now()->toDateString();
-        $today = '2025-10-04'; // ← テスト用
+        $today = '2025-10-05'; // ← テスト用
 
         $attendance = Attendance::where('user_id', $user->id)
             ->where('work_date', $today)
@@ -149,15 +149,14 @@ class AttendanceController extends Controller
             ->where('user_id', auth()->id())
             ->findOrFail($id);
 
-        $break1 = $attendance->breakTimes[0] ?? null;
-        $break2 = $attendance->breakTimes[1] ?? null;
+        $breaks = $attendance->breakTimes()->orderBy('id')->get();
 
         // 直近の申請状態を取得（同じ勤怠IDの最新レコード）
         $request = AttendanceRequest::where('attendance_id', $attendance->id)
             ->latest()
             ->first();
 
-        return view('attendance.detail', compact('attendance', 'break1', 'break2','request'));
+        return view('attendance.detail', compact('attendance', 'breaks','request'));
     }
 
     public function requestEdit(UpdateAttendanceRequest $request, $id)
@@ -175,24 +174,25 @@ class AttendanceController extends Controller
             ? Carbon::createFromFormat('H:i', $request->input('clock_out'))->setDate($workDate->year, $workDate->month, $workDate->day)
             : null;
 
-        $breaks = [
-            [
-                'break_start' => $request->input('break1_start')
-                    ? Carbon::createFromFormat('H:i', $request->input('break1_start'))->setDate($workDate->year, $workDate->month, $workDate->day)->toDateTimeString()
-                    : null,
-                'break_end' => $request->input('break1_end')
-                    ? Carbon::createFromFormat('H:i', $request->input('break1_end'))->setDate($workDate->year, $workDate->month, $workDate->day)->toDateTimeString()
-                    : null,
-            ],
-            [
-                'break_start' => $request->input('break2_start')
-                    ? Carbon::createFromFormat('H:i', $request->input('break2_start'))->setDate($workDate->year, $workDate->month, $workDate->day)->toDateTimeString()
-                    : null,
-                'break_end' => $request->input('break2_end')
-                    ? Carbon::createFromFormat('H:i', $request->input('break2_end'))->setDate($workDate->year, $workDate->month, $workDate->day)->toDateTimeString()
-                    : null,
-            ],
-        ];
+        $breakInputs = $request->input('breaks', []);
+        $breaks = [];
+
+        foreach ($breakInputs as $break) {
+            if (!empty($break['start']) || !empty($break['end'])) {
+                $breaks[] = [
+                    'break_start' => !empty($break['start'])
+                        ? \Carbon\Carbon::createFromFormat('H:i', $break['start'])
+                            ->setDate($workDate->year, $workDate->month, $workDate->day)
+                            ->toDateTimeString()
+                        : null,
+                    'break_end' => !empty($break['end'])
+                        ? \Carbon\Carbon::createFromFormat('H:i', $break['end'])
+                            ->setDate($workDate->year, $workDate->month, $workDate->day)
+                            ->toDateTimeString()
+                        : null,
+                ];
+            }
+        }
 
         AttendanceRequest::create([
             'attendance_id'        => $attendance->id,

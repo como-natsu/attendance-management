@@ -5,6 +5,7 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\StampCorrectionRequestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,5 +35,9 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/attendance/list',[AttendanceController::class,'list'])->name('attendance.list');
     Route::get('/attendance/detail/{id}',[AttendanceController::class,'detail'])->name('attendance.detail');
     Route::post('/attendance/detail/{id}/request-edit', [AttendanceController::class, 'requestEdit'])->name('attendance.requestEdit');
-
+    Route::prefix('stamp_correction_request')->group(function () {
+        Route::get('/list', [StampCorrectionRequestController::class, 'index'])->name('stamp_correction_request.list');
+        Route::post('/store', [StampCorrectionRequestController::class, 'store'])->name('stamp_correction_request.store');
+        Route::get('/detail/{id}', [StampCorrectionRequestController::class,'detail'])->name('stamp_correction_request.detail');
+    });
 });

@@ -36,4 +36,14 @@ class AttendanceRequest extends Model
         return $this->belongsTo(User::class, 'approver_id');
     }
 
+    public function getStatusLabelAttribute()
+    {
+        return match($this->status) {
+            'pending' => '承認待ち',
+            'approved' => '承認済み',
+            'rejected' => '却下',
+            default => $this->status,
+        };
+    }
+
 }

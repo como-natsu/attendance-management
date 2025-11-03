@@ -1,12 +1,7 @@
-.attendance-detail {
-    display: block;
-    width: auto;
-    min-height: 100vh;
-    overflow-x: hidden;
-    margin: 0 auto;
-    max-width: 1000px;
-    padding: 50px 20px;
-    box-sizing: border-box;
+.attendance-detail-content {
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 
 .attendance-detail-title {
@@ -32,35 +27,45 @@
 }
 
 .form-group-wrapper {
+    display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
     width: 100%;
+    max-width: 1200px;
     background-color: #fff;
     border-radius: 10px;
-    padding: 30px 70px;
+    padding: 20px 200px 20px 80px;
     box-sizing: border-box;
     margin: 0 auto 30px;
 }
 
-
 .form-group {
     display: flex;
     align-items: center;
+    justify-content: flex-start;
     gap: 70px;
     padding: 15px 0;
 }
 
+.form-group span {
+    flex-shrink: 0;
+    max-width: 300px;
+    text-align: left;
+}
+
 .attendance-detail-row {
-    width: calc(100% + 60px);
-    margin: 10px -30px;
+    position: relative;
+    left: -80px;
+    width: calc(100% + 280px);
     height: 2px;
     background-color: #f0eff2;
+    margin: 5px 0;
 }
 
 label {
     font-weight: bold;
     color: #737373;
-    min-width: 80px;
+    min-width: 120px;
 }
 
 input[type="time"],
@@ -73,15 +78,29 @@ textarea {
     box-sizing: border-box;
 }
 
-.btn-submit {
+textarea {
+    resize: none;
+}
+
+.time-input {
+    width: 80px;
+    padding: 6px 8px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.attendance-button {
     background-color: #000;
     color: #fff;
-    padding: 10px 25px;
+    padding: 5px 30px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     display: block;
     margin-left: auto;
+    font-weight: bold;
+    font-size: 15px;
 }
 
 .pending-message {
@@ -91,11 +110,29 @@ textarea {
 }
 
 .work-year {
-    margin-left: 50px;
-    margin-right: 100px;
+    margin: px 5px;
     font-weight: bold;
 }
 
 .work-month-day {
     font-weight: bold;
+}
+
+.input-block {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.time-inputs {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.form-error {
+    color: #ff0000;
+    font-size: 13px;
+    margin-top: 4px;
+    min-height: 0;
 }
