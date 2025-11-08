@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoginResponseController implements LoginResponseContract
 {
@@ -17,11 +18,15 @@ class LoginResponseController implements LoginResponseContract
     {
         $user = $request->user();
 
-        // 管理者か一般ユーザーかでリダイレクト先を変更
-        if ($user->role === 'admin') {
-            return redirect()->intended('/admin/attendance/list');
+        // 管理者ページに一般ユーザーがログインしようとしたら弾く
+        if ($request->is('admin/*') && $user->role !== 'admin') {
+            Auth::logout();
+            return redirect('/login')->withErrors(['email'=>'管理者専用ページです。']);
         }
 
-        return redirect()->intended('/attendance');
+        // role によるリダイレクト
+        return $user->role === 'admin'
+            ? redirect()->intended('/admin/attendance/list')
+            : redirect()->intended('/attendance');
     }
 }
