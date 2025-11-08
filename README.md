@@ -1,9 +1,9 @@
-# coachtech furima
+# attendance management
 
 ## 環境構築
 ### Dockerビルド
-1.git clone  git@github.com:como-natsu/coachtech-furima.git  
-2.cd coachtech-furima  
+1.git clone  git@github.com:como-natsu/attendance-management.git  
+2.cd attendance-management  
 3.DockerDesktopアプリを立ち上げる  
 4.docker-compose up -d --build  
 
