@@ -19,7 +19,7 @@ class AttendanceController extends Controller
         //$today = now()->toDateString();// ← 本番用（自動で今日の日付）
 
         // ★ テスト用に特定の日付を指定したい場合はこちらを使う
-        $today = '2025-10-05'; // ← テスト用：日付固定(テストを繰り返したい場合次の日に変更して再テスト)
+        $today = '2025-11-01'; // ← テスト用：日付固定(テストを繰り返したい場合次の日に変更して再テスト)
 
         $attendance = Attendance::firstOrCreate(
             ['user_id' => $user->id, 'work_date' => $today],
@@ -36,7 +36,7 @@ class AttendanceController extends Controller
         $user = Auth::user();
 
         //$today = now()->toDateString();
-        $today = '2025-10-05'; // ← テスト用
+        $today = '2025-11-01'; // ← テスト用
 
         $attendance = Attendance::firstOrCreate(
             ['user_id' => $user->id, 'work_date' => $today],
@@ -55,7 +55,7 @@ class AttendanceController extends Controller
         $user = Auth::user();
 
         //$today = now()->toDateString();
-        $today = '2025-10-05'; // ← テスト用
+        $today = '2025-11-01'; // ← テスト用
 
         $attendance = Attendance::where('user_id', $user->id)
             ->where('work_date', $today)
@@ -75,7 +75,7 @@ class AttendanceController extends Controller
         $user = Auth::user();
 
         //$today = now()->toDateString();
-        $today = '2025-10-05'; // ← テスト用
+        $today = '2025-11-01'; // ← テスト用
 
         $attendance = Attendance::where('user_id', $user->id)
             ->where('work_date', $today)
@@ -99,7 +99,7 @@ class AttendanceController extends Controller
         $user = Auth::user();
 
         //$today = now()->toDateString();
-        $today = '2025-10-05'; // ← テスト用
+        $today = '2025-11-01'; // ← テスト用
 
         $attendance = Attendance::where('user_id', $user->id)
             ->where('work_date', $today)
