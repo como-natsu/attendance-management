@@ -1,0 +1,137 @@
+.admin-attendance-detail {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.admin-attendance-detail-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.admin-attendance-title-text {
+    margin: 30px 0px;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.admin-line-image {
+    height: 40px;
+    width: auto;
+}
+
+.admin-attendance-detail-content {
+    display: flex;
+    width: 100%;
+}
+
+.admin-form-group-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    max-width: 1200px;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px 200px 20px 80px;
+    box-sizing: border-box;
+    margin: 0 auto 30px;
+}
+
+.admin-form-group {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 70px;
+    padding: 15px 0;
+}
+
+.admin-form-group span {
+    flex-shrink: 0;
+    max-width: 300px;
+    text-align: left;
+}
+
+.admin-attendance-detail-row {
+    position: relative;
+    left: -80px;
+    width: calc(100% + 280px);
+    height: 2px;
+    background-color: #f0eff2;
+    margin: 5px 0;
+}
+
+.admin-label {
+    font-weight: bold;
+    color: #737373;
+    min-width: 120px;
+}
+
+.admin-input,
+.admin-textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.admin-textarea {
+    resize: none;
+}
+
+.admin-time-input {
+    width: 80px;
+    padding: 6px 8px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.admin-attendance-button {
+    background-color: #000;
+    color: #fff;
+    padding: 5px 30px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: block;
+    margin-left: auto;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.admin-pending-message {
+    color: red;
+    text-align: right;
+    margin-bottom: 10px;
+}
+
+.admin-work-year {
+    margin: 0 5px;
+    font-weight: bold;
+}
+
+.admin-work-month-day {
+    font-weight: bold;
+}
+
+.admin-input-block {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.admin-time-inputs {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.form-error {
+    color: #ff0000;
+    font-size: 13px;
+    margin-top: 4px;
+    min-height: 0;
+}

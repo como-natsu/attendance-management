@@ -15,7 +15,9 @@ class AdminAttendanceController extends Controller
         $day = Carbon::parse($date);
 
         // 1日の勤怠を取得
-        $attendances = Attendance::whereDate('work_date', $day)->get();
+        $attendances = Attendance::whereDate('work_date', $day)
+            ->whereHas('user', fn($q) => $q->where('role', 'general'))
+            ->get();
 
         // 前日・翌日を計算
         $prevDate = $day->copy()->subDay()->format('Y-m-d');

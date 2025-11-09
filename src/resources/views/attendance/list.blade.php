@@ -8,33 +8,34 @@
 
 <div class="attendance-content-list">
     <div class=attendance-content-title>
-        <img class="line-image" src="{{ asset('storage/image/Line.png') }}"alt="Line-image">
+        <img class="line-image" src="{{ asset('storage/image/Line.png') }}" alt="Line-image">
         <p class=attendance-title>勤怠一覧</p>
     </div>
     <div class="month-navigation">
         <div class="month-left">
             <a href="{{ route('attendance.list', ['month' => $prevMonth]) }}" class="month-nav-link">
                 <img src="{{ asset('storage/image/left arrow.png') }}" alt="前月" class="arrow-icon">
-            前月
+                前月
             </a>
         </div>
 
         <div class="month-center">
-            <img src="{{ asset('storage/image/calendar.png') }}" alt="カレンダー" class="calendar-icon"
-                onclick="this.nextElementSibling.querySelector('.month-input').click()">
+            <form action="{{ route('attendance.list') }}" method="GET" class="month-form">
+                <label class="calendar-label">
+                    <img src="{{ asset('storage/image/calendar.png') }}" alt="カレンダー" class="calendar-icon">
+                    <input type="month" name="month" value="{{ request('month', now()->format('Y-m')) }}"
+                        class="month-input" onchange="this.form.submit()">
+                </label>
+            </form>
             <span class="month-text">
                 {{ \Carbon\Carbon::parse(request('month', now()->format('Y-m')))->format('Y年m月') }}
             </span>
-            <form action="{{ route('attendance.list') }}" method="GET" class="month-form">
-                <input type="month" name="month" value="{{ request('month', now()->format('Y-m')) }}"
-                    class="month-input" onchange="this.form.submit()">
-            </form>
         </div>
 
         <div class="month-right">
             <a href="{{ route('attendance.list', ['month' => $nextMonth]) }}" class="month-nav-link">
                 翌月
-            <img src="{{ asset('storage/image/right arrow.png') }}" alt="翌月" class="arrow-icon"></a>
+                <img src="{{ asset('storage/image/right arrow.png') }}" alt="翌月" class="arrow-icon"></a>
         </div>
     </div>
 

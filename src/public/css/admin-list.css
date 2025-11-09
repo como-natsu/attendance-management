@@ -1,0 +1,142 @@
+.admin-attendance-list {
+    display: block;
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+    padding: 50px 306px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.admin-attendance-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.attendance-title {
+    margin: 30px 0px;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.line-image {
+    height: 40px;
+    width: auto;
+}
+
+
+.day-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
+    width: 100%;
+    padding: 10px 30px;
+    border-radius: 10px;
+    margin: 0 auto 30px;
+    box-sizing: border-box;
+}
+
+.day-left,
+.day-right {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.day-left {
+    justify-content: flex-start;
+    font-weight: bold;
+}
+
+.day-right {
+    justify-content: flex-end;
+}
+
+.day-nav-link {
+    text-decoration: none;
+    color: #737373;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.day-center {
+    flex: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    position: relative;
+}
+
+.calendar-label {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.calendar-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.day-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 24px;
+    height: 24px;
+    opacity: 0;
+    cursor: pointer;
+}
+.day-text {
+    font-size: 20px;
+    font-weight: bold;
+    color: #000
+}
+
+.attendance-table-inner {
+    width: 100%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+/* 日付列に左右の余白を追加 */
+.attendance-table-row td:first-child,
+.attendance-table-row th:first-child {
+    padding-left: 30px;
+    padding-right: 40px;
+
+}
+
+/* 詳細列に左右の余白を追加 */
+.attendance-table-row td:last-child,
+.attendance-table-row th:last-child {
+    padding-left: 30px;
+    padding-right: 40px;
+}
+
+.attendance-table-row {
+    margin: 10px 20px;
+    border: solid 3px #f0eff2;
+}
+
+.attendance-table-header,
+.attendance-table-item {
+    font-weight: bold;
+    color: #737373;
+    text-align: center;
+    padding: 10px 30px;
+}
+
+.attendance-table-item-link {
+    font-weight: bold;
+    color: #000;
+    text-align: center;
+    padding: 10px;
+    text-decoration: none;
+}

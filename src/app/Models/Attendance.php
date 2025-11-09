@@ -47,7 +47,7 @@ class Attendance extends Model
         $hours = floor($totalMinutes / 60);
         $minutes = $totalMinutes % 60;
 
-        return sprintf("%02d:%02d", $hours, $minutes);
+        return $hours . ':' . str_pad($minutes, 2, '0', STR_PAD_LEFT);
     }
 
     // 勤務合計を "HH:MM" 形式で取得（休憩時間を差し引く）
@@ -69,7 +69,7 @@ class Attendance extends Model
             $hours = floor($workMinutes / 60);
             $minutes = $workMinutes % 60;
 
-            return sprintf("%02d:%02d", $hours, $minutes);
+            return $hours . ':' . str_pad($minutes, 2, '0', STR_PAD_LEFT);
             }
 
         return null;
