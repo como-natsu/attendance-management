@@ -1,0 +1,71 @@
+.admin-staff-list {
+    display: block;
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+    padding: 50px 306px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.admin-staff-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.staff-title {
+    margin: 30px 0px;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.line-image {
+    height: 40px;
+    width: auto;
+}
+
+.staff-table-inner {
+    width: 100%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+/* 日付列に左右の余白を追加 */
+.staff-table-row td:first-child,
+.staff-table-row th:first-child {
+    padding-left: 30px;
+    padding-right: 40px;
+
+}
+
+/* 詳細列に左右の余白を追加 */
+.staff-table-row td:last-child,
+.staff-table-row th:last-child {
+    padding-left: 30px;
+    padding-right: 40px;
+}
+
+.staff-table-row {
+    margin: 10px 20px;
+    border: solid 3px #f0eff2;
+}
+
+.staff-table-header,
+.staff-table-item {
+    font-weight: bold;
+    color: #737373;
+    text-align: center;
+    padding: 10px 30px;
+}
+
+.staff-table-item-link {
+    font-weight: bold;
+    color: #000;
+    text-align: center;
+    padding: 10px;
+    text-decoration: none;
+}

@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\StampCorrectionRequestController;
 use App\Http\Controllers\AdminAttendanceController;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
+use App\Http\Controllers\StaffController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,8 +45,8 @@ Route::middleware(['auth'])->group(function(){
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/attendance/list', [AdminAttendanceController::class, 'list'])->name('admin.attendance.list');
     Route::get('/attendance/detail/{id}', [AdminAttendanceController::class, 'detail'])->name('admin.attendance.detail');
-    //Route::get('/staff/list', [StaffController::class, 'index'])->name('admin.staff.list');
-    //Route::get('/attendance/staff/{id}', [StaffController::class, 'attendance'])->name('admin.staff.attendance');
+    Route::get('/staff/list', [StaffController::class, 'index'])->name('admin.staff.list');
+    Route::get('/attendance/staff/{id}', [StaffController::class, 'attendance'])->name('admin.staff.attendance');
     Route::get('/stamp_correction_request/list', [StampCorrectionRequestController::class, 'index'])->name('admin.stamp_correction_request.list');
     Route::post('/stamp_correction_request/approve/{attendance_correct_request_id}', [StampCorrectionRequestController::class,'approve'])->name('admin.stamp_correction_request.approve');
 });

@@ -7,10 +7,11 @@
 @section('content')
 
 <div class="attendance-content-list">
-    <div class=attendance-content-title>
+    <div class="attendance-content-title">
         <img class="line-image" src="{{ asset('storage/image/Line.png') }}" alt="Line-image">
-        <p class=attendance-title>勤怠一覧</p>
+        <p class="attendance-title">勤怠一覧</p>
     </div>
+
     <div class="month-navigation">
         <div class="month-left">
             <a href="{{ route('attendance.list', ['month' => $prevMonth]) }}" class="month-nav-link">
@@ -23,7 +24,8 @@
             <form action="{{ route('attendance.list') }}" method="GET" class="month-form">
                 <label class="calendar-label">
                     <img src="{{ asset('storage/image/calendar.png') }}" alt="カレンダー" class="calendar-icon">
-                    <input type="month" name="month" value="{{ request('month', now()->format('Y-m')) }}"
+                    <input type="month" name="month"
+                        value="{{ request('month', now()->format('Y-m')) }}"
                         class="month-input" onchange="this.form.submit()">
                 </label>
             </form>
@@ -35,7 +37,8 @@
         <div class="month-right">
             <a href="{{ route('attendance.list', ['month' => $nextMonth]) }}" class="month-nav-link">
                 翌月
-                <img src="{{ asset('storage/image/right arrow.png') }}" alt="翌月" class="arrow-icon"></a>
+                <img src="{{ asset('storage/image/right arrow.png') }}" alt="翌月" class="arrow-icon">
+            </a>
         </div>
     </div>
 
@@ -49,28 +52,35 @@
             <th class="attendance-table-header">詳細</th>
         </tr>
 
-        @foreach(\Carbon\CarbonPeriod::create($start,$end) as $date)
-        @php
-        $key = $date->format('Y-m-d');
-        $attendance = $attendances->get($key);
-        @endphp
-        <tr class="attendance-table-row">
-            <td class="attendance-table-item">{{ $date->format('m/d') }}
-                ({{ ['日','月','火','水','木','金','土'][$date->dayOfWeek] }})</td>
-            <td class="attendance-table-item">
-                {{ $attendance ? \Carbon\Carbon::parse($attendance->clock_in)->format('H:i') : '' }}
-            </td>
-            <td class="attendance-table-item">
-                {{ $attendance ? \Carbon\Carbon::parse($attendance->clock_out)->format('H:i') : '' }}
-            </td>
-            <td class="attendance-table-item">{{ $attendance?->break_total ?? '' }}</td>
-            <td class="attendance-table-item">{{ $attendance?->work_total ?? '' }}</td>
-            <td class="attendance-table-item">
-                @if($attendance)
-                <a class="attendance-table-item-link" href="{{ route('attendance.detail', $attendance->id) }}">詳細</a>
-                @endif
-            </td>
-        </tr>
+        @foreach(\Carbon\CarbonPeriod::create($start, $end) as $date)
+            @php
+                $key = $date->format('Y-m-d');
+                $attendance = $attendances->get($key);
+            @endphp
+            <tr class="attendance-table-row">
+                <td class="attendance-table-item">
+                    {{ $date->format('m/d') }} ({{ ['日','月','火','水','木','金','土'][$date->dayOfWeek] }})
+                </td>
+                <td class="attendance-table-item">
+                    @if (!empty($attendance?->clock_in))
+                        {{ \Carbon\Carbon::parse($attendance->clock_in)->format('H:i') }}
+                    @endif
+                </td>
+                <td class="attendance-table-item">
+                    @if (!empty($attendance?->clock_out))
+                        {{ \Carbon\Carbon::parse($attendance->clock_out)->format('H:i') }}
+                    @endif
+                </td>
+                <td class="attendance-table-item">{{ $attendance?->break_total ?? '' }}</td>
+                <td class="attendance-table-item">{{ $attendance?->work_total ?? '' }}</td>
+                <td class="attendance-table-item">
+                    @if ($attendance)
+                        <a class="attendance-table-item-link" href="{{ route('attendance.detail', $attendance->id) }}">
+                            詳細
+                        </a>
+                    @endif
+                </td>
+            </tr>
         @endforeach
     </table>
 </div>
