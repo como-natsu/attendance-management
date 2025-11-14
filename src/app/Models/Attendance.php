@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Attendance extends Model
 {
@@ -73,5 +74,25 @@ class Attendance extends Model
             }
 
         return null;
+    }
+
+    public function calculateWorkTime()
+    {
+    if (!$this->clock_in || !$this->clock_out) {
+        return;
+    }
+
+    // 総勤務時間（分）
+    $total = Carbon::parse($this->clock_in)->diffInMinutes($this->clock_out);
+
+    // 休憩を引く
+    foreach ($this->breakTimes as $break) {
+        if ($break->break_start && $break->break_end) {
+            $total -= Carbon::parse($break->break_start)->diffInMinutes($break->break_end);
+        }
+    }
+
+    $this->total_work_time = $total;
+    $this->save();
     }
 }

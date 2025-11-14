@@ -67,6 +67,8 @@ class AttendanceController extends Controller
             $attendance->save();
         }
 
+        $attendance->calculateWorkTime();
+
         return redirect()->back();
     }
 
