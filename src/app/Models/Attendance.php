@@ -19,6 +19,15 @@ class Attendance extends Model
         'status',
     ];
 
+    protected $casts = [
+        'work_date' => 'date',
+        'clock_in' => 'datetime',
+        'clock_out' => 'datetime',
+        'break_start' => 'datetime',
+        'break_end' => 'datetime',
+    ];
+
+
     public function user()
     {
         return $this->belongsTo(User::class);

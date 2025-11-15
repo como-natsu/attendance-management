@@ -14,7 +14,6 @@ class AttendanceController extends Controller
     public function index()
     {
         $user = Auth::user();
-
         // 今日の日付を取得
         //$today = now()->toDateString();// ← 本番用（自動で今日の日付）
 

@@ -104,7 +104,11 @@
                     <div class="admin-input-block">
                         <textarea name="reason" class="admin-textarea" @if($request &&
                             $request->status === 'pending') disabled @endif>{{ old('reason', $request->reason ?? '') }}</textarea>
-                        <div class="form-error">@error('reason') {{ $message }} @enderror</div>
+                        <div class="form-error">
+                            @error('reason')
+                            {{ $message }}
+                            @enderror
+                        </div>
                     </div>
                 </div>
             </div>
