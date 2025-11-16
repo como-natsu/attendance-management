@@ -1,4 +1,4 @@
-.request-content-list {
+.admin-request-content-list {
     display: block;
     width: 100%;
     min-height: 100vh;
@@ -27,13 +27,13 @@
     font-weight: bold;
 }
 
-.request-content-title {
+.admin-request-content-title {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-.request-title {
+.admin-request-title {
     margin: 30px 0px;
     font-size: 30px;
     font-weight: bold;
@@ -44,7 +44,7 @@
     width: auto;
 }
 
-.request-table-inner {
+.admin-request-table-inner {
     width: 100%;
     margin: 0 auto;
     border-collapse: collapse;
@@ -53,20 +53,20 @@
     border-radius: 20px;
 }
 
-.request-table-row {
+.admin-request-table-row {
     margin: 10px 20px;
     border: solid 3px #f0eff2;
 }
 
-.request-table-header,
-.request-table-item {
+.admin-request-table-header,
+.admin-request-table-item {
     font-weight: bold;
     color: #737373;
     text-align: center;
     padding: 10px 20px;
 }
 
-.request-table-item-link {
+.admin-request-table-item-link {
     font-weight: bold;
     color: #000;
     text-align: center;

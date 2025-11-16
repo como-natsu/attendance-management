@@ -59,6 +59,8 @@
                     <label class="admin-label">休憩{{ $index + 1 }}</label>
                     <div class="admin-input-block">
                         <div class="admin-time-inputs">
+                            <input type="hidden" name="breaks[{{ $index }}][id]" value="{{ $break->id }}">
+
                             <input type="text" name="breaks[{{ $index }}][start]" class="admin-time-input"
                                 value="{{ old("breaks.$index.start", $break->break_start ? \Carbon\Carbon::parse($break->break_start)->format('H:i') : '') }}"
                                 @if($request && $request->status === 'pending') disabled @endif>

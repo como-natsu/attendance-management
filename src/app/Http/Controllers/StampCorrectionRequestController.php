@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\AttendanceRequest;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Attendance;
 
 class StampCorrectionRequestController extends Controller
 {
@@ -14,36 +13,81 @@ class StampCorrectionRequestController extends Controller
         $user = Auth::user();
         $tab = $request->query('tab', 'approval'); // デフォルトは承認待ち
 
+        // 共通クエリ
+        $query = AttendanceRequest::query();
+
+        // タブごとのステータス条件
         if ($tab === 'approval') {
-            // 承認待ち一覧
-            $requests = AttendanceRequest::where('user_id', $user->id)
-                ->where('status', 'pending')
-                ->latest()
-                ->get();
-        } else {
-            // 承認済み一覧
-            $requests = AttendanceRequest::where('user_id', $user->id)
-                ->whereIn('status', ['approved', 'rejected'])
-                ->latest()
-                ->get();
+            $query->where('status', 'pending');
+        } elseif ($tab === 'approved') {
+            $query->whereIn('status', ['approved', 'rejected']);
         }
 
-        return view('stamp_correction_request.correction-request', compact('tab', 'requests'));
+        if ($user->role === 'admin') {
+            // 管理者は全ユーザーの申請を取得
+            $requests = $query->latest()->get();
+
+            // 管理者用 Blade を使用
+            return view('admin.attendance-request.list', compact('tab', 'requests'));
+        } else {
+            // 一般ユーザーは自分の申請のみ
+            $requests = $query->where('user_id', $user->id)->latest()->get();
+
+            // 一般用 Blade を使用
+            return view('stamp_correction_request.correction-request', compact('tab', 'requests'));
+        }
     }
 
     public function detail($id)
     {
-        // 該当する申請データを取得
-        $request = AttendanceRequest::where('user_id', auth()->id())
+        $user = Auth::user();
+        $requestItem = AttendanceRequest::with('attendance', 'attendance.breakTimes')
             ->findOrFail($id);
 
-        // 対応する勤怠レコードを取得
-        $attendance = Attendance::with('breakTimes')->findOrFail    ($request->attendance_id);
+        // 権限チェック：一般ユーザーは自分の申請しか見れない
+        if ($user->role !== 'admin' && $requestItem->user_id !== $user->id) {
+            abort(403);
+        }
 
-        // 休憩情報を取得
+        $attendance = $requestItem->attendance;
         $breaks = $attendance->breakTimes()->orderBy('id')->get();
 
-        // 既存のattendance.detailビューをそのまま使う
-        return view('attendance.detail', compact('attendance', 'request', 'breaks'));
+        // Blade を役割ごとに分ける
+        if ($user->role === 'admin') {
+            return view('admin.attendance-request.approval', compact('attendance', 'requestItem', 'breaks'));
+        } else {
+            return view('attendance.detail', compact('attendance', 'requestItem', 'breaks'));
+        }
+    }
+
+    public function showApproveForm($attendance_correct_request_id)
+    {
+        $user = Auth::user();
+        if ($user->role !== 'admin') {abort(403);
+        }
+
+        // 申請データを取得
+        $requestItem = AttendanceRequest::with('attendance.breakTimes')->findOrFail($attendance_correct_request_id);
+
+        $attendance = $requestItem->attendance;
+        $breaks = $attendance->breakTimes()->orderBy('id')->get();
+
+        return view('admin.attendance-request.approval', compact('requestItem', 'attendance', 'breaks'));
+    }
+
+    // 承認処理（管理者用）
+    public function approve($attendance_correct_request_id)
+    {
+        $user = Auth::user();
+        if ($user->role !== 'admin') {
+            abort(403);
+        }
+
+        $requestItem = AttendanceRequest::findOrFail($attendance_correct_request_id);
+        $requestItem->status = 'approved';
+        $requestItem->save();
+
+        return redirect()->route('admin.attendance-request.list')
+            ->with('status', '申請を承認しました');
     }
 }
