@@ -1,0 +1,96 @@
+/* 全体コンテナ */
+.admin-attendance-detail-content {
+    justify-content: center;
+    width: 100%;
+}
+
+/* タイトル */
+.admin-attendance-detail-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.admin-attendance-title-text {
+    margin: 30px 0px;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.admin-line-image {
+    height: 40px;
+    width: auto;
+}
+
+/* 白背景のボックス */
+.admin-form-group-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    max-width: 1200px;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px 200px 20px 80px;
+    box-sizing: border-box;
+    margin: 0 auto 30px;
+}
+
+/* 1行ずつのレイアウト */
+.admin-form-group {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 70px;
+    padding: 15px 0;
+}
+
+.admin-form-group span {
+    flex-shrink: 0;
+    max-width: 300px;
+    text-align: left;
+}
+
+/* 区切り線 */
+.admin-attendance-detail-row {
+    position: relative;
+    left: -80px;
+    /* padding に合わせてずらす */
+    width: calc(100% + 280px);
+    height: 2px;
+    background-color: #f0eff2;
+    margin: 5px 0;
+}
+
+.admin-label {
+    font-weight: bold;
+    color: #737373;
+    min-width: 120px;
+}
+
+/* 静的テキスト専用 */
+.static-text {
+    padding: 8px 0;
+}
+
+.admin-attendance-detail-button-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.admin-attendance-button,
+.disabled-button {
+    padding: 5px 30px;
+    background-color: #000;
+    color: #fff;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.disabled-button {
+    background-color: #b5b5b5;
+    cursor: default;
+}

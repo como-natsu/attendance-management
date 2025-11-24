@@ -87,7 +87,8 @@ class StampCorrectionRequestController extends Controller
         $requestItem->status = 'approved';
         $requestItem->save();
 
-        return redirect()->route('admin.attendance-request.list')
-            ->with('status', '申請を承認しました');
+        return redirect()
+            ->route('admin.stamp_correction_request.showApprove', $attendance_correct_request_id)
+            ->with('success', '承認しました');
     }
 }

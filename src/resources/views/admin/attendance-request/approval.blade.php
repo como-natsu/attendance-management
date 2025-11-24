@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('css')
-<link rel="stylesheet" href="{{ asset('css/admin-detail.css') }}">
+<link rel="stylesheet" href="{{ asset('css/approve.css') }}">
 @endsection
 
 @section('content')
@@ -12,113 +12,75 @@
     </div>
 
     <div class="admin-attendance-detail-content">
-        <form action="{{ route('admin.stamp_correction_request.approve', $request->id) }}" method="POST">
-            @csrf
-            <div class="admin-form-group-wrapper">
-                <!-- 名前 -->
-                <div class="admin-form-group">
-                    <label class="admin-label">名前</label>
-                    <span class="admin-work-name">{{ $attendance->user->name }}</span>
+
+        {{-- 白い枠 --}}
+        <div class="admin-form-group-wrapper">
+
+            <!-- 名前 -->
+            <div class="admin-form-group">
+                <label class="admin-label">名前</label>
+                <span class="admin-work-name">{{ $attendance->user->name }}</span>
+            </div>
+            <div class="admin-attendance-detail-row"></div>
+
+            <!-- 日付 -->
+            <div class="admin-form-group">
+                <label class="admin-label">日付</label>
+                <span class="admin-work-year">
+                    {{ \Carbon\Carbon::parse($attendance->work_date)->format('Y') }}年
+                </span>
+                <span class="admin-work-month-day">
+                    {{ \Carbon\Carbon::parse($attendance->work_date)->format('n月j日') }}
+                </span>
+            </div>
+            <div class="admin-attendance-detail-row"></div>
+
+            <!-- 出勤・退勤（表示専用） -->
+            <div class="admin-form-group">
+                <label class="admin-label">出勤・退勤</label>
+                <div class="admin-input-block static-text">
+                    {{ $attendance->clock_in ? \Carbon\Carbon::parse($attendance->clock_in)->format('H:i') : '--:--' }}
+                    〜
+                    {{ $attendance->clock_out ? \Carbon\Carbon::parse($attendance->clock_out)->format('H:i') : '--:--' }}
                 </div>
-                <div class="admin-attendance-detail-row"></div>
+            </div>
+            <div class="admin-attendance-detail-row"></div>
 
-                <!-- 日付 -->
-                <div class="admin-form-group">
-                    <label class="admin-label">日付</label>
-                    <span
-                        class="admin-work-year">{{ \Carbon\Carbon::parse($attendance->work_date)->format('Y') }}年</span>
-                    <span
-                        class="admin-work-month-day">{{ \Carbon\Carbon::parse($attendance->work_date)->format('n月j日') }}</span>
+            <!-- 休憩（表示専用） -->
+            @foreach($breaks as $index => $break)
+            <div class="admin-form-group">
+                <label class="admin-label">休憩{{ $index + 1 }}</label>
+                <div class="admin-input-block static-text">
+                    {{ $break->break_start ? \Carbon\Carbon::parse($break->break_start)->format('H:i') : '--:--' }}
+                    〜
+                    {{ $break->break_end ? \Carbon\Carbon::parse($break->break_end)->format('H:i') : '--:--' }}
                 </div>
-                <div class="admin-attendance-detail-row"></div>
+            </div>
+            <div class="admin-attendance-detail-row"></div>
+            @endforeach
 
-                <!-- 出勤・退勤 -->
-                <div class="admin-form-group">
-                    <label class="admin-label">出勤・退勤</label>
-                    <div class="admin-input-block">
-                        <div class="admin-time-inputs">
-                            <input type="text" name="clock_in" class="admin-time-input"
-                                value="{{ old('clock_in', $attendance->clock_in ? \Carbon\Carbon::parse($attendance->clock_in)->format('H:i') : '') }}"
-                                @if($request && $request->status === 'pending') disabled @endif>
-                            <span>～</span>
-                            <input type="text" name="clock_out" class="admin-time-input"
-                                value="{{ old('clock_out', $attendance->clock_out ? \Carbon\Carbon::parse($attendance->clock_out)->format('H:i') : '') }}"
-                                @if($request && $request->status === 'pending') disabled @endif>
-                        </div>
-                        <div class="form-error">
-                            @error('clock_in') {{ $message }} @enderror
-                            @error('clock_out') {{ $message }} @enderror
-                        </div>
-                    </div>
-                </div>
-                <div class="admin-attendance-detail-row"></div>
-
-                <!-- 休憩 -->
-                @foreach($breaks as $index => $break)
-                <div class="admin-form-group">
-                    <label class="admin-label">休憩{{ $index + 1 }}</label>
-                    <div class="admin-input-block">
-                        <div class="admin-time-inputs">
-                            <input type="hidden" name="breaks[{{ $index }}][id]" value="{{ $break->id }}">
-
-                            <input type="text" name="breaks[{{ $index }}][start]" class="admin-time-input"
-                                value="{{ old("breaks.$index.start", $break->break_start ? \Carbon\Carbon::parse($break->break_start)->format('H:i') : '') }}"
-                                @if($request && $request->status === 'pending') disabled @endif>
-                            <span>～</span>
-                            <input type="text" name="breaks[{{ $index }}][end]" class="admin-time-input"
-                                value="{{ old("breaks.$index.end", $break->break_end ? \Carbon\Carbon::parse($break->break_end)->format('H:i') : '') }}"
-                                @if($request && $request->status === 'pending') disabled @endif>
-                        </div>
-                        <div class="form-error">
-                            @error("breaks.$index.start") {{ $message }} @enderror
-                            @error("breaks.$index.end") {{ $message }} @enderror
-                        </div>
-                    </div>
-                </div>
-                <div class="admin-attendance-detail-row"></div>
-                @endforeach
-
-                <!-- 追加休憩 -->
-                @php $nextIndex = count($breaks); @endphp
-                <div class="admin-form-group">
-                    <label class="admin-label">休憩{{ $nextIndex + 1 }}</label>
-                    <div class="admin-input-block">
-                        <div class="admin-time-inputs">
-                            <input type="text" name="breaks[{{ $nextIndex }}][start]" class="admin-time-input"
-                                value="{{ old("breaks.$nextIndex.start") }}" @if($request && $request->status ===
-                            'pending') disabled @endif>
-                            <span>～</span>
-                            <input type="text" name="breaks[{{ $nextIndex }}][end]" class="admin-time-input"
-                                value="{{ old("breaks.$nextIndex.end") }}" @if($request && $request->status ===
-                            'pending') disabled @endif>
-                        </div>
-                        <div class="form-error">
-                            @error("breaks.$nextIndex.start") {{ $message }} @enderror
-                            @error("breaks.$nextIndex.end") {{ $message }} @enderror
-                        </div>
-                    </div>
-                </div>
-                <div class="admin-attendance-detail-row"></div>
-
-                <!-- 備考 -->
-                <div class="admin-form-group">
-                    <label class="admin-label">備考</label>
-                    <div class="admin-input-block">
-                        <textarea name="reason" class="admin-textarea" @if($request &&
-                            $request->status === 'pending') disabled @endif>{{ old('reason', $request->reason ?? '') }}</textarea>
-                        <div class="form-error">
-                            @error('reason')
-                            {{ $message }}
-                            @enderror
-                        </div>
-                    </div>
+            <!-- 備考（表示専用） -->
+            <div class="admin-form-group">
+                <label class="admin-label">備考</label>
+                <div class="admin-input-block static-text">
+                    {{ $requestItem->reason ? $requestItem->reason : '（なし）' }}
                 </div>
             </div>
 
-            <div class="admin-attendance-detail-button-wrapper">
+        </div> <!-- admin-form-group-wrapper 終了 -->
+
+        {{-- ボタン（白枠の外、右下に配置） --}}
+        <div class="admin-attendance-detail-button-wrapper">
+            @if($requestItem->status === 'pending')
+            <form action="{{ route('admin.stamp_correction_request.approve', $requestItem->id) }}" method="POST">
+                @csrf
                 <button type="submit" class="admin-attendance-button">承認</button>
-            </div>
-        </form>
+            </form>
+            @else
+            <div class="admin-attendance-button disabled-button">承認済み</div>
+            @endif
+        </div>
+
     </div>
 </div>
 @endsection
