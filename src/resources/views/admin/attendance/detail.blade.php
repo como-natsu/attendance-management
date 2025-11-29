@@ -38,12 +38,10 @@
                     <div class="admin-input-block">
                         <div class="admin-time-inputs">
                             <input type="text" name="clock_in" class="admin-time-input"
-                                value="{{ old('clock_in', $attendance->clock_in ? \Carbon\Carbon::parse($attendance->clock_in)->format('H:i') : '') }}"
-                                @if($request && $request->status === 'pending') disabled @endif>
+                                value="{{ old('clock_in', $attendance->clock_in ? \Carbon\Carbon::parse($attendance->clock_in)->format('H:i') : '') }}">
                             <span>～</span>
                             <input type="text" name="clock_out" class="admin-time-input"
-                                value="{{ old('clock_out', $attendance->clock_out ? \Carbon\Carbon::parse($attendance->clock_out)->format('H:i') : '') }}"
-                                @if($request && $request->status === 'pending') disabled @endif>
+                                value="{{ old('clock_out', $attendance->clock_out ? \Carbon\Carbon::parse($attendance->clock_out)->format('H:i') : '') }}">
                         </div>
                         <div class="form-error">
                             @error('clock_in') {{ $message }} @enderror
@@ -60,14 +58,11 @@
                     <div class="admin-input-block">
                         <div class="admin-time-inputs">
                             <input type="hidden" name="breaks[{{ $index }}][id]" value="{{ $break->id }}">
-
                             <input type="text" name="breaks[{{ $index }}][start]" class="admin-time-input"
-                                value="{{ old("breaks.$index.start", $break->break_start ? \Carbon\Carbon::parse($break->break_start)->format('H:i') : '') }}"
-                                @if($request && $request->status === 'pending') disabled @endif>
+                                value="{{ old("breaks.$index.start", $break->break_start ? \Carbon\Carbon::parse($break->break_start)->format('H:i') : '') }}">
                             <span>～</span>
                             <input type="text" name="breaks[{{ $index }}][end]" class="admin-time-input"
-                                value="{{ old("breaks.$index.end", $break->break_end ? \Carbon\Carbon::parse($break->break_end)->format('H:i') : '') }}"
-                                @if($request && $request->status === 'pending') disabled @endif>
+                                value="{{ old("breaks.$index.end", $break->break_end ? \Carbon\Carbon::parse($break->break_end)->format('H:i') : '') }}">
                         </div>
                         <div class="form-error">
                             @error("breaks.$index.start") {{ $message }} @enderror
@@ -85,12 +80,10 @@
                     <div class="admin-input-block">
                         <div class="admin-time-inputs">
                             <input type="text" name="breaks[{{ $nextIndex }}][start]" class="admin-time-input"
-                                value="{{ old("breaks.$nextIndex.start") }}" @if($request && $request->status ===
-                            'pending') disabled @endif>
+                                value="{{ old("breaks.$nextIndex.start") }}">
                             <span>～</span>
                             <input type="text" name="breaks[{{ $nextIndex }}][end]" class="admin-time-input"
-                                value="{{ old("breaks.$nextIndex.end") }}" @if($request && $request->status ===
-                            'pending') disabled @endif>
+                                value="{{ old("breaks.$nextIndex.end") }}">
                         </div>
                         <div class="form-error">
                             @error("breaks.$nextIndex.start") {{ $message }} @enderror
@@ -104,24 +97,19 @@
                 <div class="admin-form-group">
                     <label class="admin-label">備考</label>
                     <div class="admin-input-block">
-                        <textarea name="reason" class="admin-textarea" @if($request &&
-                            $request->status === 'pending') disabled @endif>{{ old('reason', $request->reason ?? '') }}</textarea>
+                        <textarea name="reason"
+                            class="admin-textarea">{{ old('reason', $request->reason ?? '') }}</textarea>
                         <div class="form-error">
-                            @error('reason')
-                            {{ $message }}
-                            @enderror
+                            @error('reason') {{ $message }} @enderror
                         </div>
                     </div>
                 </div>
+
             </div>
 
             <!-- 修正ボタン -->
             <div class="admin-attendance-detail-button-wrapper">
-                @if(!$request || $request->status !== 'pending')
                 <button type="submit" class="admin-attendance-button">修正</button>
-                @else
-                <p class="admin-pending-message">*承認待ちのため修正はできません。</p>
-                @endif
             </div>
         </form>
     </div>

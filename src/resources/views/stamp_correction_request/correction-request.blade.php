@@ -33,7 +33,7 @@
             <td class="request-table-item">{{ $requestItem->reason ?? '—' }}</td>
             <td class="request-table-item">{{ \Carbon\Carbon::parse($requestItem->created_at)->format('Y/m/d H:i') }}</td>
             <td class="request-table-item">
-                <a class="request-table-item-link" href="{{ route('stamp_correction_request.detail', $requestItem->id) }}">詳細</a>
+                <a class="request-table-item-link" href="{{ route('attendance.detail', $requestItem->id) }}">詳細</a>
             </td>
         </tr>
         @endforeach

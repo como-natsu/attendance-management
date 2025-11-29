@@ -1,10 +1,8 @@
-/* 全体コンテナ */
 .admin-attendance-detail-content {
     justify-content: center;
     width: 100%;
 }
 
-/* タイトル */
 .admin-attendance-detail-title {
     display: flex;
     align-items: center;
@@ -22,7 +20,6 @@
     width: auto;
 }
 
-/* 白背景のボックス */
 .admin-form-group-wrapper {
     display: flex;
     flex-direction: column;
@@ -36,7 +33,6 @@
     margin: 0 auto 30px;
 }
 
-/* 1行ずつのレイアウト */
 .admin-form-group {
     display: flex;
     align-items: center;
@@ -51,7 +47,6 @@
     text-align: left;
 }
 
-/* 区切り線 */
 .admin-attendance-detail-row {
     position: relative;
     left: -80px;
@@ -68,7 +63,6 @@
     min-width: 120px;
 }
 
-/* 静的テキスト専用 */
 .static-text {
     padding: 8px 0;
 }

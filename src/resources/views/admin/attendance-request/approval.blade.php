@@ -10,20 +10,13 @@
         <img class="admin-line-image" src="{{ asset('storage/image/Line.png') }}" alt="Line-image">
         <p class="admin-attendance-title-text">勤怠詳細</p>
     </div>
-
     <div class="admin-attendance-detail-content">
-
-        {{-- 白い枠 --}}
         <div class="admin-form-group-wrapper">
-
-            <!-- 名前 -->
             <div class="admin-form-group">
                 <label class="admin-label">名前</label>
                 <span class="admin-work-name">{{ $attendance->user->name }}</span>
             </div>
             <div class="admin-attendance-detail-row"></div>
-
-            <!-- 日付 -->
             <div class="admin-form-group">
                 <label class="admin-label">日付</label>
                 <span class="admin-work-year">
@@ -34,8 +27,6 @@
                 </span>
             </div>
             <div class="admin-attendance-detail-row"></div>
-
-            <!-- 出勤・退勤（表示専用） -->
             <div class="admin-form-group">
                 <label class="admin-label">出勤・退勤</label>
                 <div class="admin-input-block static-text">
@@ -45,8 +36,6 @@
                 </div>
             </div>
             <div class="admin-attendance-detail-row"></div>
-
-            <!-- 休憩（表示専用） -->
             @foreach($breaks as $index => $break)
             <div class="admin-form-group">
                 <label class="admin-label">休憩{{ $index + 1 }}</label>
@@ -58,18 +47,13 @@
             </div>
             <div class="admin-attendance-detail-row"></div>
             @endforeach
-
-            <!-- 備考（表示専用） -->
             <div class="admin-form-group">
                 <label class="admin-label">備考</label>
                 <div class="admin-input-block static-text">
                     {{ $requestItem->reason ? $requestItem->reason : '（なし）' }}
                 </div>
             </div>
-
-        </div> <!-- admin-form-group-wrapper 終了 -->
-
-        {{-- ボタン（白枠の外、右下に配置） --}}
+        </div>
         <div class="admin-attendance-detail-button-wrapper">
             @if($requestItem->status === 'pending')
             <form action="{{ route('admin.stamp_correction_request.approve', $requestItem->id) }}" method="POST">

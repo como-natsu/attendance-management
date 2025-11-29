@@ -75,7 +75,6 @@ class StampCorrectionRequestController extends Controller
         return view('admin.attendance-request.approval', compact('requestItem', 'attendance', 'breaks'));
     }
 
-    // 承認処理（管理者用）
     public function approve($attendance_correct_request_id)
     {
         $user = Auth::user();
@@ -84,6 +83,32 @@ class StampCorrectionRequestController extends Controller
         }
 
         $requestItem = AttendanceRequest::findOrFail($attendance_correct_request_id);
+        $attendance = $requestItem->attendance;
+        $workDate = \Carbon\Carbon::parse($attendance->work_date);
+
+        // 出勤・退勤の反映
+        if ($requestItem->requested_clock_in) {
+            $attendance->clock_in = Carbon::parse($requestItem->requested_clock_in);
+        }
+        if ($requestItem->requested_clock_out) {
+            $attendance->clock_out = Carbon::parse($requestItem->requested_clock_out);
+        }
+        $attendance->save();
+
+        // 休憩の反映（全削除 → 再作成）
+        $attendance->breakTimes()->delete();
+
+        $breaks = json_decode($requestItem->requested_breaks, true);
+        if ($breaks) {
+            foreach ($breaks as $break) {
+                $attendance->breakTimes()->create([
+                    'break_start' => $break['break_start'],
+                    'break_end'   => $break['break_end'],
+                ]);
+            }
+        }
+
+        // 申請ステータス更新
         $requestItem->status = 'approved';
         $requestItem->save();
 
