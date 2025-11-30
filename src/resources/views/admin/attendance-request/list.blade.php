@@ -38,7 +38,7 @@
                 {{ \Carbon\Carbon::parse($requestItem->created_at)->format('Y/m/d H:i') }}</td>
             <td class="admin-request-table-item">
                 <a class="admin-request-table-item-link"
-                    href="{{ route('admin.stamp_correction_request.showApprove', $requestItem->attendance_id) }}">詳細</a>
+                    href="{{ route('admin.stamp_correction_request.showApprove', $requestItem->id) }}" >詳細</a>
             </td>
         </tr>
         @endforeach

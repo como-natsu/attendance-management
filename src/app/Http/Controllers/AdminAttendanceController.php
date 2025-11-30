@@ -33,21 +33,26 @@ class AdminAttendanceController extends Controller
     ]);
     }
 
-    // 勤怠詳細ページ（管理者用）
     public function detail($id)
     {
-        // 勤怠と関連情報を取得
-        $attendance = Attendance::with('user', 'breakTimes', 'attendanceRequests')
-            ->findOrFail($id);
+        $attendance = Attendance::with('user', 'breakTimes')->findOrFail($id);
 
         $breaks = $attendance->breakTimes()->orderBy('id')->get();
 
-        // 直近の申請状態を取得（同じ勤怠IDの最新レコード）
+        // 最新の申請
         $request = AttendanceRequest::where('attendance_id', $attendance->id)
             ->latest()
             ->first();
 
-        return view('admin.attendance.detail', compact('attendance', 'breaks', 'request'));
+        // 管理者が修正可能かどうか
+        $canEdit = !$request || $request->status !== 'pending';
+
+        return view('admin.attendance.detail', [
+            'attendance' => $attendance,
+            'breaks' => $breaks,
+            'request' => $request,
+            'canEdit' => $canEdit
+        ]);
     }
 
     public function requestEdit(AdminUpdateAttendanceRequest $request, $id)

@@ -11,12 +11,11 @@
         <p class="attendance-title">勤怠詳細</p>
     </div>
 
-    <div class="attendance-detail-content">
+    <div class="attendance-detail-content {{ $applyRequest && $applyRequest->status === 'pending' ? 'pending-mode' : '' }}">
         <form action="{{ route('attendance.requestEdit', $attendance->id) }}" method="POST">
             @csrf
+            @method('PATCH')
             <div class="form-group-wrapper">
-
-                <!-- 名前 -->
                 <div class="form-group">
                     <label>名前</label>
                     <span class="work-name">{{ $attendance->user->name }}</span>
@@ -31,8 +30,6 @@
                         class="work-month-day">{{ \Carbon\Carbon::parse($attendance->work_date)->format('n月j日') }}</span>
                 </div>
                 <div class="attendance-detail-row"></div>
-
-                <!-- 出勤・退勤 -->
                 <div class="form-group">
                     <label>出勤・退勤</label>
                     <div class="input-block">
@@ -40,14 +37,11 @@
                             <input type="text" name="clock_in" class="time-input"
                                 value="{{ old('clock_in', $applyRequest && $applyRequest->requested_clock_in ? \Carbon\Carbon::parse($applyRequest->requested_clock_in)->format('H:i') : ($attendance->clock_in ? \Carbon\Carbon::parse($attendance->clock_in)->format('H:i') : '')) }}"
                                 @if($applyRequest && $applyRequest->status === 'pending') disabled @endif>
-
-                            <span>～</span>
-
+                            <span class="">～</span>
                             <input type="text" name="clock_out" class="time-input"
                                 value="{{ old('clock_out', $applyRequest && $applyRequest->requested_clock_out ? \Carbon\Carbon::parse($applyRequest->requested_clock_out)->format('H:i') : ($attendance->clock_out ? \Carbon\Carbon::parse($attendance->clock_out)->format('H:i') : '')) }}"
                                 @if($applyRequest && $applyRequest->status === 'pending') disabled @endif>
                         </div>
-
                         <div class="form-error">
                             @error('clock_in') {{ $message }} @enderror
                             @error('clock_out') {{ $message }} @enderror
@@ -55,8 +49,6 @@
                     </div>
                 </div>
                 <div class="attendance-detail-row"></div>
-
-                <!-- 休憩 -->
                 @php
                 $breakData = $applyRequest && !empty($applyRequest->requested_breaks)
                 ? json_decode($applyRequest->requested_breaks, true)
@@ -93,7 +85,6 @@
                 <div class="attendance-detail-row"></div>
                 @endforeach
 
-                <!-- 追加休憩（承認待ちのときは非表示） -->
                 @if(!$applyRequest || $applyRequest->status !== 'pending')
                 @php $nextIndex = count($breakData); @endphp
 
@@ -103,9 +94,7 @@
                         <div class="time-inputs">
                             <input type="text" name="breaks[{{ $nextIndex }}][start]" class="time-input"
                                 value="{{ old("breaks.$nextIndex.start") }}">
-
                             <span>～</span>
-
                             <input type="text" name="breaks[{{ $nextIndex }}][end]" class="time-input"
                                 value="{{ old("breaks.$nextIndex.end") }}">
                         </div>
@@ -113,8 +102,6 @@
                 </div>
                 <div class="attendance-detail-row"></div>
                 @endif
-
-                <!-- 備考 -->
                 <div class="form-group">
                     <label>備考</label>
                     <div class="input-block">
@@ -126,10 +113,7 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-
-            <!-- 修正ボタン -->
             <div class="attendance-detail-button-wrapper">
                 @if(!$applyRequest || $applyRequest->status !== 'pending')
                 <button type="submit" class="attendance-button">修正</button>

@@ -11,6 +11,14 @@
         <p class="admin-attendance-title-text">勤怠詳細</p>
     </div>
     <div class="admin-attendance-detail-content">
+        @php
+        $breakData = $requestItem->requested_breaks
+        ? json_decode($requestItem->requested_breaks, true)
+        : $breaks->map(fn($b) => [
+        'break_start' => $b->break_start,
+        'break_end' => $b->break_end
+        ])->toArray();
+        @endphp
         <div class="admin-form-group-wrapper">
             <div class="admin-form-group">
                 <label class="admin-label">名前</label>
@@ -30,19 +38,31 @@
             <div class="admin-form-group">
                 <label class="admin-label">出勤・退勤</label>
                 <div class="admin-input-block static-text">
-                    {{ $attendance->clock_in ? \Carbon\Carbon::parse($attendance->clock_in)->format('H:i') : '--:--' }}
+                    {{ $requestItem->requested_clock_in
+                        ? \Carbon\Carbon::parse($requestItem->requested_clock_in)->format('H:i')
+                        : ($attendance->clock_in ? \Carbon\Carbon::parse($attendance->clock_in)->format('H:i') : '--:--')
+                    }}
                     〜
-                    {{ $attendance->clock_out ? \Carbon\Carbon::parse($attendance->clock_out)->format('H:i') : '--:--' }}
+                    {{ $requestItem->requested_clock_out
+                        ? \Carbon\Carbon::parse($requestItem->requested_clock_out)->format('H:i')
+                        : ($attendance->clock_out ? \Carbon\Carbon::parse($attendance->clock_out)->format('H:i') : '--:--')
+                    }}
                 </div>
             </div>
             <div class="admin-attendance-detail-row"></div>
-            @foreach($breaks as $index => $break)
+            @foreach($breakData as $index => $break)
             <div class="admin-form-group">
                 <label class="admin-label">休憩{{ $index + 1 }}</label>
                 <div class="admin-input-block static-text">
-                    {{ $break->break_start ? \Carbon\Carbon::parse($break->break_start)->format('H:i') : '--:--' }}
+                    {{ $break['break_start']
+                            ? \Carbon\Carbon::parse($break['break_start'])->format('H:i')
+                            : '--:--'
+                        }}
                     〜
-                    {{ $break->break_end ? \Carbon\Carbon::parse($break->break_end)->format('H:i') : '--:--' }}
+                    {{ $break['break_end']
+                            ? \Carbon\Carbon::parse($break['break_end'])->format('H:i')
+                            : '--:--'
+                        }}
                 </div>
             </div>
             <div class="admin-attendance-detail-row"></div>
@@ -50,7 +70,7 @@
             <div class="admin-form-group">
                 <label class="admin-label">備考</label>
                 <div class="admin-input-block static-text">
-                    {{ $requestItem->reason ? $requestItem->reason : '（なし）' }}
+                    {{ $requestItem->reason }}
                 </div>
             </div>
         </div>
@@ -64,7 +84,6 @@
             <div class="admin-attendance-button disabled-button">承認済み</div>
             @endif
         </div>
-
     </div>
 </div>
 @endsection

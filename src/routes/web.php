@@ -35,7 +35,7 @@ Route::middleware(['auth'])->group(function(){
     Route::post('/attendance/break-end',[AttendanceController::class,'breakEnd'])->name('attendance.break_end');
     Route::get('/attendance/list',[AttendanceController::class,'list'])->name('attendance.list');
     Route::get('/attendance/detail/{id}',[AttendanceController::class,'detail'])->name('attendance.detail');
-    Route::post('/attendance/detail/{id}/request-edit', [AttendanceController::class, 'requestEdit'])->name('attendance.requestEdit');
+    Route::patch('/attendance/detail/{id}/request-edit', [AttendanceController::class, 'requestEdit'])->name('attendance.requestEdit');
     Route::prefix('stamp_correction_request')->group(function () {
         Route::get('/list', [StampCorrectionRequestController::class, 'index'])->name('stamp_correction_request.list');
         Route::post('/store', [StampCorrectionRequestController::class, 'store'])->name('stamp_correction_request.store');
@@ -45,7 +45,7 @@ Route::middleware(['auth'])->group(function(){
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/attendance/list', [AdminAttendanceController::class, 'list'])->name('admin.attendance.list');
     Route::get('/attendance/detail/{id}', [AdminAttendanceController::class, 'detail'])->name('admin.attendance.detail');
-    Route::post('/attendance/detail/{id}/request-edit', [AdminAttendanceController::class, 'requestEdit'])->name('admin.attendance.requestEdit');
+    Route::patch('/attendance/detail/{id}/request-edit', [AdminAttendanceController::class, 'requestEdit'])->name('admin.attendance.requestEdit');
     Route::get('/staff/list', [StaffController::class, 'index'])->name('admin.staff.list');
     Route::get('/attendance/staff/{id}', [StaffController::class, 'attendance'])->name('admin.staff.attendance');
     Route::get('/stamp_correction_request/list', [StampCorrectionRequestController::class, 'index'])->name('admin.stamp_correction_request.list');

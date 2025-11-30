@@ -39,6 +39,11 @@
     margin: 0 auto 30px;
 }
 
+.form-group-wrapper,
+.form-group-wrapper * {
+    font-weight: bold;
+}
+
 .form-group {
     display: flex;
     align-items: center;
@@ -80,6 +85,7 @@ textarea {
 
 textarea {
     resize: none;
+    font-size: 15px;
 }
 
 .time-input {
@@ -88,6 +94,7 @@ textarea {
     text-align: center;
     border: 1px solid #ccc;
     border-radius: 4px;
+    font-size: 15px;
 }
 
 .attendance-button {
@@ -107,6 +114,10 @@ textarea {
     color: red;
     text-align: right;
     margin-bottom: 10px;
+}
+
+.work-name{
+    font-weight: bold;
 }
 
 .work-year {
@@ -135,4 +146,11 @@ textarea {
     font-size: 13px;
     margin-top: 4px;
     min-height: 0;
+}
+
+.attendance-detail-content.pending .time-input,
+.attendance-detail-content.pending textarea {
+    border: none;
+    background-color: transparent;
+    pointer-events: none;
 }
