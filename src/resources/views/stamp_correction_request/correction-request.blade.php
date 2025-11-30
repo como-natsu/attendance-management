@@ -11,8 +11,10 @@
         <p class="request-title">申請一覧</p>
     </div>
     <div class="tab-menu">
-        <a href="{{ url('/stamp_correction_request/list?tab=approval') }}" class="{{ $tab === 'approval' ? 'active' : '' }}">承認待ち</a>
-        <a href="{{ url('/stamp_correction_request/list?tab=approved') }}" class="{{ $tab === 'approved' ? 'active' : '' }}">承認済み</a>
+        <a href="{{ url('/stamp_correction_request/list?tab=approval') }}"
+            class="{{ $tab === 'approval' ? 'active' : '' }}">承認待ち</a>
+        <a href="{{ url('/stamp_correction_request/list?tab=approved') }}"
+            class="{{ $tab === 'approved' ? 'active' : '' }}">承認済み</a>
     </div>
 
     <table class="request-table-inner">
@@ -29,11 +31,14 @@
         <tr class="request-table-row">
             <td class="request-table-item">{{ $requestItem->status_label }}</td>
             <td class="request-table-item">{{ $requestItem->user->name ?? '—' }}</td>
-            <td class="request-table-item">{{ \Carbon\Carbon::parse($requestItem->attendance->work_date ?? null)->format('Y/m/d') ?? '—' }}</td>
-            <td class="request-table-item">{{ $requestItem->reason ?? '—' }}</td>
-            <td class="request-table-item">{{ \Carbon\Carbon::parse($requestItem->created_at)->format('Y/m/d H:i') }}</td>
             <td class="request-table-item">
-                <a class="request-table-item-link" href="{{ route('attendance.detail', $requestItem->id) }}">詳細</a>
+                {{ \Carbon\Carbon::parse($requestItem->attendance->work_date ?? null)->format('Y/m/d') ?? '—' }}</td>
+            <td class="request-table-item">{{ $requestItem->reason ?? '—' }}</td>
+            <td class="request-table-item">{{ \Carbon\Carbon::parse($requestItem->created_at)->format('Y/m/d H:i') }}
+            </td>
+            <td class="request-table-item">
+                <a class="request-table-item-link"
+                    href="{{ route('attendance.detail', $requestItem->attendance_id) }}">詳細</a>
             </td>
         </tr>
         @endforeach
