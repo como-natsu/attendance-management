@@ -15,9 +15,9 @@ class AttendanceController extends Controller
     {
         $user = Auth::user();
         // 本番用：自動で今日の日付
-        //$today = now()->toDateString();
+        $today = now()->toDateString();
         // ★ テスト用：特定の日付を固定
-        $today = '2025-11-01';
+        //$today = '2025-12-01';
 
         $attendance = Attendance::firstOrCreate(
             ['user_id' => $user->id, 'work_date' => $today],
@@ -32,8 +32,8 @@ class AttendanceController extends Controller
     public function clockIn()
     {
         $user = Auth::user();
-        //$today = now()->toDateString(); // 本番用
-        $today = '2025-11-01'; // テスト用
+        $today = now()->toDateString(); // 本番用
+        //$today = '2025-12-01'; // テスト用
 
         $attendance = Attendance::firstOrCreate(
             ['user_id' => $user->id, 'work_date' => $today],
@@ -50,8 +50,8 @@ class AttendanceController extends Controller
     public function clockOut()
     {
         $user = Auth::user();
-        //$today = now()->toDateString(); // 本番用
-        $today = '2025-11-01'; // テスト用
+        $today = now()->toDateString(); // 本番用
+        //$today = '2025-12-01'; // テスト用
 
         $attendance = Attendance::where('user_id', $user->id)
             ->where('work_date', $today)
@@ -71,8 +71,8 @@ class AttendanceController extends Controller
     public function breakStart()
     {
         $user = Auth::user();
-        //$today = now()->toDateString(); // 本番用
-        $today = '2025-11-01'; // テスト用
+        $today = now()->toDateString(); // 本番用
+        //$today = '2025-12-01'; // テスト用
 
         $attendance = Attendance::where('user_id', $user->id)
             ->where('work_date', $today)
@@ -94,8 +94,8 @@ class AttendanceController extends Controller
     {
         $user = Auth::user();
 
-        //$today = now()->toDateString(); // 本番用
-        $today = '2025-11-01'; // テスト用
+        $today = now()->toDateString(); // 本番用
+        //$today = '2025-12-01'; // テスト用
 
         $attendance = Attendance::where('user_id', $user->id)
             ->where('work_date', $today)
