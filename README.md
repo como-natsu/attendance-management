@@ -55,9 +55,12 @@ macOS やユーザー環境によっては www-data:www-data を $(whoami):$(who
 docker-compose exec mysql bash
 mysql -u root -p
 //パスワードはrootと入力
-create database test_database;
+create database demo_test;
 
+//テスト用DBへマイグレーション実行
 docker-compose exec php bash
 php artisan migrate:fresh --env=testing
-./vendor/bin/phpunit
+
+//テスト実行
+php artisan test
 ```
