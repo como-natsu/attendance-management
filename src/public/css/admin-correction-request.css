@@ -3,7 +3,9 @@
     width: 100%;
     min-height: 100vh;
     overflow-x: hidden;
-    padding: 50px 306px;
+    padding-inline: 1rem;
+    max-width: 54rem;
+    padding-top: 2rem;
     margin: 0 auto;
     box-sizing: border-box;
 }

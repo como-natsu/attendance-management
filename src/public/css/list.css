@@ -3,7 +3,10 @@
     width: 100%;
     min-height: 100vh;
     overflow-x: hidden;
-    padding: 50px 306px;
+    padding-inline: 1rem;
+    max-width: 54rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
     margin: 0 auto;
     box-sizing: border-box;
 }
@@ -108,19 +111,14 @@
     border-radius: 20px;
 }
 
-/* 日付列に左右の余白を追加 */
 .attendance-table-row td:first-child,
 .attendance-table-row th:first-child {
-    padding-left: 30px;
-    padding-right: 40px;
-
+    padding-inline: 1rem;
 }
 
-/* 詳細列に左右の余白を追加 */
 .attendance-table-row td:last-child,
 .attendance-table-row th:last-child {
-    padding-left: 30px;
-    padding-right: 40px;
+    padding-inline: 1rem;
 }
 
 .attendance-table-row {

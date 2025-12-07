@@ -32,6 +32,19 @@
 2.sudo chown -R www-data:www-data storage   bootstrap/cache  
 macOS やユーザー環境によっては www-data:www-data を $(whoami):$(whoami) に置き換えてください。  
 
+## 初期ユーザーについて
+開発用アカウントは database/seeders にあるシーダーで作成されています。
+- 管理者アカウント:
+  - メール: admin@example.com
+  - パスワード: password
+一般ユーザー（確認用）もシーダーに作成済みです。
+すべてのダミーアカウント情報は `database/seeders/UserSeeder.php` を参照してください。
+
+### Seederの補足
+`UserSeeder.php` では管理者と一般ユーザーの作成がされています。
+`AttendanceSeeder.php` では**先月分1か月分の勤怠データ**のダミーが作成されます。
+開発・テスト用に追加したデータは、この Seeder を実行することで作成できます。
+もし新しいダミーデータを追加したい場合は、該当 Seeder に追記してください。
 
 
 ## 使用技術(実行環境)
