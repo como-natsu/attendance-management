@@ -12,7 +12,7 @@
 ### Laravel環境構築
 1.docker-compose exec php bash  
 2.composer install  
-3..env.exampleファイルから.envを作成し、環境変数を変更
+3..env.exampleファイルから.envを作成し、環境変数を変更  
   DB_CONNECTION=mysql  
   DB_HOST=mysql  
   DB_PORT=3306  
@@ -33,18 +33,18 @@
 macOS やユーザー環境によっては www-data:www-data を $(whoami):$(whoami) に置き換えてください。  
 
 ## 初期ユーザーについて
-開発用アカウントは database/seeders にあるシーダーで作成されています。
+開発用アカウントは database/seeders にあるシーダーで作成されています。  
 - 管理者アカウント:
   - メール: admin@example.com
   - パスワード: password
-一般ユーザー（確認用）もシーダーに作成済みです。
-すべてのダミーアカウント情報は `database/seeders/UserSeeder.php` を参照してください。
+一般ユーザー（確認用）もシーダーに作成済みです。  
+すべてのダミーアカウント情報は `database/seeders/UserSeeder.php` を参照してください。  
 
 ### Seederの補足
-`UserSeeder.php` では管理者と一般ユーザーの作成がされています。
-`AttendanceSeeder.php` では**先月分1か月分の勤怠データ**のダミーが作成されます。
-開発・テスト用に追加したデータは、この Seeder を実行することで作成できます。
-もし新しいダミーデータを追加したい場合は、該当 Seeder に追記してください。
+`UserSeeder.php` では管理者と一般ユーザーの作成がされています。  
+`AttendanceSeeder.php` では**先月分1か月分の勤怠データ**のダミーが作成されます。  
+開発・テスト用に追加したデータは、この Seeder を実行することで作成できます。  
+もし新しいダミーデータを追加したい場合は、該当 Seeder に追記してください。  
 
 
 ## 使用技術(実行環境)
@@ -64,16 +64,16 @@ macOS やユーザー環境によっては www-data:www-data を $(whoami):$(who
 ## PHPUnitを利用したテストに関して
 以下のコマンド:  
 ```
-//テスト用データベースの作成
+テスト用データベースの作成  
 docker-compose exec mysql bash
 mysql -u root -p
-//パスワードはrootと入力
+パスワードはrootと入力
 create database demo_test;
 
-//テスト用DBへマイグレーション実行
+テスト用DBへマイグレーション実行
 docker-compose exec php bash
 php artisan migrate:fresh --env=testing
 
-//テスト実行
+テスト実行
 php artisan test
 ```
