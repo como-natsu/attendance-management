@@ -26,6 +26,11 @@ class AttendanceRequest extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function requests()
+    {
+        return $this->hasMany(AttendanceRequest::class);
+    }
+
     public function attendance()
     {
         return $this->belongsTo(Attendance::class);

@@ -44,7 +44,7 @@ class AttendanceController extends Controller
         $attendance->clock_in = now();
         $attendance->save();
 
-        return redirect()->back();
+        return redirect()->route('attendance.index');
     }
 
     public function clockOut()
@@ -65,7 +65,7 @@ class AttendanceController extends Controller
 
         $attendance?->calculateWorkTime();
 
-        return redirect()->back();
+        return redirect()->route('attendance.index');
     }
 
     public function breakStart()
@@ -87,7 +87,7 @@ class AttendanceController extends Controller
             $attendance->save();
         }
 
-        return redirect()->back();
+        return redirect()->route('attendance.index');
     }
 
     public function breakEnd()
@@ -110,7 +110,7 @@ class AttendanceController extends Controller
             $attendance->save();
         }
 
-        return redirect()->back();
+        return redirect()->route('attendance.index');
     }
 
     public function list(Request $request)

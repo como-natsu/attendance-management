@@ -13,10 +13,14 @@
                 <p class="attendance-status-text">{{ $attendance->status }}</p>
             </div>
             <div class="attendance-date">
-                <p class="attendance-date-text" id="current-date"></p>
+                <p class="attendance-date-text" id="current-date">
+                    {{ now()->format('Y年m月d日') }}
+                </p>
             </div>
             <div class="attendance-time">
-                <p class="attendance-time-text" id="current-time"></p>
+                <p class="attendance-time-text" id="current-time">
+                    {{ now()->format('H:i') }}
+                </p>
             </div>
         </div>
 

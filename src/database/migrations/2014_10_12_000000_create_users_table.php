@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('role')->default('user')->comment('ユーザー権限：admin=管理者, general=一般');
+            $table->rememberToken();
             $table->timestamps();
         });
     }
