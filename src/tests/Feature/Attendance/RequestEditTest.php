@@ -5,15 +5,14 @@ namespace Tests\Feature\Attendance;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Attendance;
-use App\Models\BreakTime;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\AttendanceRequest;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class RequestEditTest extends TestCase
 {
     use RefreshDatabase;
 
-    //** @test */
+    /** @test */
     public function clock_in_cannot_be_after_clock_out()
     {
         $user = User::factory()->create();
@@ -112,7 +111,7 @@ class RequestEditTest extends TestCase
             'reason' => '修正申請テスト',
         ]);
 
-        $response->assertRedirect(); // 修正申請後はどこかにリダイレクトされる想定
+        $response->assertRedirect();
         $this->assertDatabaseHas('attendance_requests', [
             'attendance_id' => $attendance->id,
             'user_id' => $user->id,
@@ -126,34 +125,43 @@ class RequestEditTest extends TestCase
         $user = User::factory()->create();
         $attendance = Attendance::factory()->for($user)->create();
 
-        $request = $attendance->requests()->create([
+        $request = AttendanceRequest::factory()->for($attendance)->create([
             'user_id' => $user->id,
-            'clock_in' => '09:30',
-            'clock_out' => '18:00',
+            'requested_clock_in' => '2025-12-07 09:30:00',
+            'requested_clock_out' => '2025-12-07 18:00:00',
+            'requested_breaks' => json_encode([['start' => '2025-12-07 12:30:00', 'end' => '2025-12-07 13:30:00']]),
             'reason' => '修正申請テスト',
             'status' => 'pending',
         ]);
 
-        $response = $this->actingAs($user)->get('/attendance/request/list');
+        $response = $this->actingAs($user)->get('/stamp_correction_request/list');
         $response->assertSee($request->reason);
         $response->assertSee('承認待ち');
     }
 
     /** @test */
-    public function request_detail_redirects_to_attendance_detail()
+    public function request_detail_displays_attendance_detail()
     {
         $user = User::factory()->create();
         $attendance = Attendance::factory()->for($user)->create();
 
-        $request = $attendance->requests()->create([
+        $attendanceRequest = AttendanceRequest::factory()->for($attendance)->create([
             'user_id' => $user->id,
-            'clock_in' => '09:30',
-            'clock_out' => '18:00',
-            'reason' => '修正申請テスト',
-            'status' => 'pending',
-        ]);
+            'requested_clock_in' => '2025-12-07 09:30:00',
+            'requested_clock_out' => '2025-12-07 18:00:00',
+            'requested_breaks' => json_encode([
+               ['start' => '12:30', 'end' => '13:30'] // 時刻だけでもOK
+            ]),
+        'reason' => '修正申請テスト',
+        'status' => 'pending',
+    ]);
 
-        $response = $this->actingAs($user)->get("/attendance/request/detail/{$request->id}");
-        $response->assertRedirect("/attendance/detail/{$attendance->id}");
+        $response = $this->actingAs($user)->get("/attendance/detail/{$attendance->id}");
+
+        $response->assertStatus(200);
+        $response->assertViewIs('attendance.detail');
+        $response->assertViewHas('attendance', $attendance);
+        $response->assertViewHas('applyRequest', $attendanceRequest);
+        $response->assertSee('修正申請テスト');
     }
 }

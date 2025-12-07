@@ -12,11 +12,7 @@ services:
             - php
 
     php:
-        build:
-            context: ./docker/php
-            args:
-                UID: ${UID}
-                GID: ${GID}
+        build: ./docker/php
         volumes:
             - ./src:/var/www/
 

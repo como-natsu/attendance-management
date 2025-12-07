@@ -39,18 +39,19 @@
     justify-content: flex-start;
     gap: 70px;
     padding: 15px 0;
+    font-weight: bold;
 }
 
 .admin-form-group span {
     flex-shrink: 0;
     max-width: 300px;
     text-align: left;
+    font-weight: bold;
 }
 
 .admin-attendance-detail-row {
     position: relative;
     left: -80px;
-    /* padding に合わせてずらす */
     width: calc(100% + 280px);
     height: 2px;
     background-color: #f0eff2;

@@ -26,10 +26,10 @@
                 <div class="form-group">
                     <label>日付</label>
                     <span class="work-year">{{ \Carbon\Carbon::parse($attendance->work_date)->format('Y') }}年</span>
-                    <span
-                        class="work-month-day">{{ \Carbon\Carbon::parse($attendance->work_date)->format('n月j日') }}</span>
+                    <span class="work-month-day">{{ \Carbon\Carbon::parse($attendance->work_date)->format('n月j日') }}</span>
                 </div>
                 <div class="attendance-detail-row"></div>
+
                 <div class="form-group">
                     <label>出勤・退勤</label>
                     <div class="input-block">
@@ -37,7 +37,7 @@
                             <input type="text" name="clock_in" class="time-input"
                                 value="{{ old('clock_in', $applyRequest && $applyRequest->requested_clock_in ? \Carbon\Carbon::parse($applyRequest->requested_clock_in)->format('H:i') : ($attendance->clock_in ? \Carbon\Carbon::parse($attendance->clock_in)->format('H:i') : '')) }}"
                                 @if($applyRequest && $applyRequest->status === 'pending') disabled @endif>
-                            <span class="">～</span>
+                            <span>～</span>
                             <input type="text" name="clock_out" class="time-input"
                                 value="{{ old('clock_out', $applyRequest && $applyRequest->requested_clock_out ? \Carbon\Carbon::parse($applyRequest->requested_clock_out)->format('H:i') : ($attendance->clock_out ? \Carbon\Carbon::parse($attendance->clock_out)->format('H:i') : '')) }}"
                                 @if($applyRequest && $applyRequest->status === 'pending') disabled @endif>
@@ -49,15 +49,16 @@
                     </div>
                 </div>
                 <div class="attendance-detail-row"></div>
+
                 @php
                 $breakData = $applyRequest && !empty($applyRequest->requested_breaks)
-                ? json_decode($applyRequest->requested_breaks, true)
-                : $breaks->map(function($b){
-                return [
-                'break_start' => $b->break_start,
-                'break_end' => $b->break_end
-                ];
-                })->toArray();
+                    ? json_decode($applyRequest->requested_breaks, true)
+                    : $breaks->map(function($b){
+                        return [
+                            'break_start' => $b->break_start,
+                            'break_end' => $b->break_end
+                        ];
+                    })->toArray();
                 @endphp
 
                 @foreach($breakData as $index => $break)
@@ -66,16 +67,13 @@
                     <div class="input-block">
                         <div class="time-inputs">
                             <input type="text" name="breaks[{{ $index }}][start]" class="time-input"
-                                value="{{ old("breaks.$index.start", $break['break_start'] ? \Carbon\Carbon::parse($break['break_start'])->format('H:i') : '') }}"
+                                value="{{ old("breaks.$index.start", isset($break['break_start']) ? (\Carbon\Carbon::parse($break['break_start'])->format('H:i')) : '') }}"
                                 @if($applyRequest && $applyRequest->status === 'pending') disabled @endif>
-
                             <span>～</span>
-
                             <input type="text" name="breaks[{{ $index }}][end]" class="time-input"
-                                value="{{ old("breaks.$index.end", $break['break_end'] ? \Carbon\Carbon::parse($break['break_end'])->format('H:i') : '') }}"
+                                value="{{ old("breaks.$index.end", isset($break['break_end']) ? (\Carbon\Carbon::parse($break['break_end'])->format('H:i')) : '') }}"
                                 @if($applyRequest && $applyRequest->status === 'pending') disabled @endif>
                         </div>
-
                         <div class="form-error">
                             @error("breaks.$index.start") {{ $message }} @enderror
                             @error("breaks.$index.end") {{ $message }} @enderror
@@ -87,7 +85,6 @@
 
                 @if(!$applyRequest || $applyRequest->status !== 'pending')
                 @php $nextIndex = count($breakData); @endphp
-
                 <div class="form-group">
                     <label>休憩{{ $nextIndex + 1 }}</label>
                     <div class="input-block">
@@ -102,18 +99,18 @@
                 </div>
                 <div class="attendance-detail-row"></div>
                 @endif
+
                 <div class="form-group">
                     <label>備考</label>
                     <div class="input-block">
-                        <textarea name="reason" @if($applyRequest &&
-                            $applyRequest->status === 'pending') disabled @endif>{{ old('reason', $applyRequest->reason ?? '') }}</textarea>
-
+                        <textarea name="reason" @if($applyRequest && $applyRequest->status === 'pending') disabled @endif>{{ old('reason', $applyRequest->reason ?? '') }}</textarea>
                         <div class="form-error">
                             @error('reason') {{ $message }} @enderror
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="attendance-detail-button-wrapper">
                 @if(!$applyRequest || $applyRequest->status !== 'pending')
                 <button type="submit" class="attendance-button">修正</button>
