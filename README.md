@@ -34,9 +34,9 @@ macOS やユーザー環境によっては www-data:www-data を $(whoami):$(who
 
 ## 初期ユーザーについて
 開発用アカウントは database/seeders にあるシーダーで作成されています。  
-- 管理者アカウント:
-  - メール: admin@example.com
-  - パスワード: password
+- 管理者アカウント:  
+  - メール: admin@example.com  
+  - パスワード: password  
 一般ユーザー（確認用）もシーダーに作成済みです。  
 すべてのダミーアカウント情報は `database/seeders/UserSeeder.php` を参照してください。  
 
