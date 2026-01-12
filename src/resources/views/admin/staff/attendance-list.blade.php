@@ -83,5 +83,16 @@
         </tr>
         @endforeach
     </table>
+    <div class="csv-button">
+    <a
+        href="{{ route('admin.staff.attendance.csv', [
+            'id' => $staff->id,
+            'month' => request('month', now()->format('Y-m'))
+        ]) }}"
+        class="csv-button__submit"
+    >
+        エクスポート
+    </a>
+</div>
 </div>
 @endsection

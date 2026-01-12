@@ -55,7 +55,7 @@ class AdminUpdateAttendanceRequest extends FormRequest
                     $clock_in  = Carbon::createFromFormat('H:i', $data['clock_in']);
                     $clock_out = Carbon::createFromFormat('H:i', $data['clock_out']);
                     if ($clock_in->gt($clock_out)) {
-                        $validator->errors()->add('clock_in', '出勤時間が不適切な値です');
+                        $validator->errors()->add('clock_in', '出勤時間もしくは退勤時間が不適切な値です');
                     }
                 }
 
