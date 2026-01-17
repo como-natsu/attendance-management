@@ -22,6 +22,9 @@ use App\Http\Controllers\StaffController;
 
 
 Route::post('/register', [RegisteredUserController::class, 'store']);
+Route::get('/email/verify',function(){
+return view('auth.verify-email');
+})->middleware(['auth'])->name('verification.notice');
 Route::get('/admin/login', function () {
     return view('auth.admin-login');
 })->name('admin.login');

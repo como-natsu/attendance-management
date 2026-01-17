@@ -1,0 +1,16 @@
+.verify-wrapper {
+    text-align: center;
+}
+
+.primary-button {
+    display: inline-block;
+    padding: 10px 20px;
+}
+
+.resend-link {
+    background: none;
+    border: none;
+    color: #007bff;
+    text-decoration: underline;
+    cursor: pointer;
+}

@@ -41,6 +41,10 @@ class FortifyServiceProvider extends ServiceProvider
                 : view('auth.login');
         });
 
+        Fortify::verifyEmailView(function () {
+            return view('auth.verify-email');
+        });
+
         // 認証処理
         Fortify::authenticateUsing(function (Request $request) {
             $credentials = $request->only('email', 'password');
