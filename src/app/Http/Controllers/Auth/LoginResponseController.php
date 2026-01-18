@@ -24,6 +24,11 @@ class LoginResponseController implements LoginResponseContract
             return redirect('/login')->withErrors(['email'=>'管理者専用ページです。']);
         }
 
+        // メール未認証チェック
+        if ($user instanceof MustVerifyEmail && ! $user->hasVerifiedEmail()) {
+            return redirect()->route('verification.notice');
+        }
+
         // role によるリダイレクト
         return $user->role === 'admin'
             ? redirect()->intended('/admin/attendance/list')

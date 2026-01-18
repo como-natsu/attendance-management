@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\RegisterRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Events\Registered;
 
 class RegisteredUserController extends Controller
 {
@@ -19,8 +20,10 @@ class RegisteredUserController extends Controller
             'role' => 'general',
         ]);
 
+        event(new Registered($user));
+
         Auth::login($user);
 
-        return redirect('/attendance');
+        return redirect()->route('verification.notice');
     }
 }
